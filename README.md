@@ -3,7 +3,7 @@
 Site public (groupes, séances individuelles, activités) avec réservation et paiement en ligne (Mollie),
 et espace de gestion privé `/gestion` pour Sandrine. PHP 8.2+ et SQLite, sans framework, hébergé chez alwaysdata.
 
-Plan et décisions : `OneDrive\Documents\#2 - Le Génie Numérique\LGN\Clients\Sandrine PEYRON\ARCHITECTURE.md`.
+Plan et décisions : `OneDrive\Documents\Le Génie Numérique\LGN\Clients\Sandrine PEYRON\ARCHITECTURE.md`.
 
 ## Organisation
 | Dossier | Rôle |
