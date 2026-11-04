@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="fr"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Espace de gestion, aperçu</title>
+<link rel="icon" href="assets/ph/logo.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;600&family=Newsreader:ital,opsz,wght@0,6..72,300..500;1,6..72,300..400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css?v=4">
+<style>
+body{background:var(--papier)}
+.bo{display:grid;grid-template-columns:240px 1fr;min-height:100vh}
+.bo aside{background:var(--encre);color:#DCE5E1;padding:24px 16px;position:sticky;top:0;height:100vh}
+.bo aside .marque{color:#fff;margin:0 0 28px 8px}
+.bo aside .marque small{color:#B9C8C2}
+.bo aside a.m{display:flex;justify-content:space-between;color:#DCE5E1;text-decoration:none;padding:10px 12px;border-radius:12px;font-weight:600;font-size:.95rem}
+.bo aside a.m[aria-current],.bo aside a.m:hover{background:rgba(255,255,255,.1);color:#fff}
+.bo aside .pastille{background:var(--bergamote);color:var(--encre);border-radius:999px;padding:0 8px;font-size:.8rem}
+.bo main{padding:28px clamp(16px,3vw,44px) 60px;min-width:0}
+.bandeau{background:var(--bergamote);border-radius:14px;padding:10px 16px;font-size:.92rem;margin-bottom:26px}
+.bo h1{font-size:clamp(2rem,3.4vw,2.8rem);margin-bottom:6px}
+.grille{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:18px;margin-top:26px}
+.carte{background:var(--brume);border-radius:20px;padding:22px}
+.carte h2{font-size:1.35rem;margin-bottom:14px}
+.c4{grid-column:span 4}.c5{grid-column:span 5}.c7{grid-column:span 7}.c8{grid-column:span 8}.c12{grid-column:span 12}
+.chiffre{font:300 2.6rem/1 var(--serif)}
+.ligne{display:grid;grid-template-columns:70px 1fr auto;gap:12px;align-items:center;padding:12px 0;border-top:1px solid var(--trait);font-size:.95rem}
+.ligne:first-of-type{border-top:0}
+.ligne b{font-weight:600}
+.etat-p{font-size:.8rem;font-weight:600;padding:.25em .7em;border-radius:999px;background:#fff}
+.etat-p.ok{background:#DCEBDD}.etat-p.att{background:#FFF3C4}
+.barre{height:8px;background:#fff;border-radius:999px;overflow:hidden;margin:6px 0 2px}
+.barre i{display:block;height:100%;background:var(--encre)}
+.gl{padding:10px 0;border-top:1px solid var(--trait)}
+.gl:first-of-type{border-top:0}
+.form2{display:grid;grid-template-columns:1fr 1fr;gap:4px 18px}
+.form2 .plein-l{grid-column:1/-1}
+.champ select{width:100%;font:400 1rem var(--sans);padding:13px 14px;border-radius:12px;border:1.5px solid var(--trait);background:#fff;color:var(--encre)}
+.mbo{display:none}
+@media (max-width:980px){.c4,.c5,.c7,.c8{grid-column:span 12}}
+@media (max-width:760px){
+  .bo{grid-template-columns:1fr}.bo aside{display:none}
+  .mbo{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+  .form2{grid-template-columns:1fr}
+}
+</style>
+</head><body>
+<div class="bo">
+<aside aria-label="Menu de gestion">
+<a class="marque" href="index.html"><img src="assets/ph/logo.webp" alt="" width="40" height="40"><span><b>Gestion</b><small>Sandrine Peyron</small></span></a>
+<a class="m" href="#" aria-current="page">Tableau de bord</a>
+<a class="m" href="#">Agenda</a>
+<a class="m" href="#">Groupes <span class="pastille">2</span></a>
+<a class="m" href="#">Clients</a>
+<a class="m" href="#">Paiements</a>
+<a class="m" href="#">Factures</a>
+<a class="m" href="#">Activités</a>
+<a class="m" href="#tarifs">Paramètres</a>
+</aside>
+<main id="contenu">
+<div class="mbo"><a class="marque" href="index.html" style="margin:0"><img src="assets/ph/logo.webp" alt="" width="36" height="36"><span><b>Gestion</b></span></a><span class="btn" style="padding:.7em 1.1em">Menu</span></div>
+<p class="bandeau"><b>Aperçu de l’espace de gestion.</b> Données fictives, aucun bouton n’est actif. Accès réservé à Sandrine (mot de passe et code de sécurité).</p>
+<h1>Bonjour Sandrine</h1>
+<p class="muted">Mardi 3 novembre. 3 rendez-vous aujourd’hui, 2 groupes presque complets.</p>
+
+<div class="grille">
+<section class="carte c7"><h2>Aujourd’hui</h2>
+<div class="ligne"><b>09 h 00</b><span>Claire M., EMDR-DSA, cabinet</span><span class="etat-p ok">Payé</span></div>
+<div class="ligne"><b>10 h 30</b><span>Julien R., EMDR-DSA, visio</span><span class="etat-p ok">Payé</span></div>
+<div class="ligne"><b>14 h 00</b><span>Groupe aidants familiaux, séance 1 sur 5 (8 inscrits)</span><span class="etat-p">Groupe</span></div>
+</section>
+<section class="carte c5"><h2>Encaissé en novembre</h2>
+<p class="chiffre">1 240 €</p><p class="muted small">18 paiements, 1 remboursement. Prochain virement Mollie : jeudi.</p>
+<a class="btn" href="#" style="margin-top:8px">Voir les paiements</a>
+</section>
+
+<section class="carte c7"><h2>Groupes en cours d’inscription</h2>
+<div class="gl"><b>Sophrologie adultes, groupe 1</b><div class="barre"><i style="width:70%"></i></div><span class="small muted">7 sur 10. Le groupe 2 ouvrira automatiquement à 10.</span></div>
+<div class="gl"><b>Parentalité, groupe 1</b><div class="barre"><i style="width:62%"></i></div><span class="small muted">5 sur 8</span></div>
+<div class="gl"><b>Aidants familiaux, groupe 2</b><div class="barre"><i style="width:25%"></i></div><span class="small muted">2 sur 8</span></div>
+</section>
+<section class="carte c5"><h2>À traiter</h2>
+<div class="ligne" style="grid-template-columns:1fr auto"><span>Demande d’annulation : Marie L., groupe deuil</span><span class="etat-p att">À valider</span></div>
+<div class="ligne" style="grid-template-columns:1fr auto"><span>Compte rendu du cycle parentalité</span><span class="etat-p">Brouillon</span></div>
+</section>
+
+<section class="carte c12" id="tarifs"><h2>Paramètres : tarifs et durées</h2>
+<p class="small muted">Sandrine modifie ses tarifs elle-même. Tarif vide = réservation en ligne fermée pour cette activité. Les réservations déjà payées gardent leur prix.</p>
+<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:.95rem">
+<thead><tr style="text-align:left;color:var(--sauge)"><th style="padding:8px">Activité</th><th style="padding:8px">Tarif (€)</th><th style="padding:8px">Durée (min)</th><th style="padding:8px">Proposée</th></tr></thead><tbody>
+<tr><td style="padding:8px;border-top:1px solid var(--trait)">Soutien à la parentalité (cycle)</td><td style="padding:8px;border-top:1px solid var(--trait)"><input aria-label="Tarif parentalité" placeholder="À fixer" style="width:100px;padding:8px;border-radius:10px;border:1.5px solid var(--trait)"></td><td style="padding:8px;border-top:1px solid var(--trait)">90</td><td style="padding:8px;border-top:1px solid var(--trait)"><input type="checkbox" checked aria-label="Proposée"></td></tr>
+<tr><td style="padding:8px;border-top:1px solid var(--trait)">Soutien aux aidants familiaux (cycle)</td><td style="padding:8px;border-top:1px solid var(--trait)"><input aria-label="Tarif aidants" placeholder="À fixer" style="width:100px;padding:8px;border-radius:10px;border:1.5px solid var(--trait)"></td><td style="padding:8px;border-top:1px solid var(--trait)">90</td><td style="padding:8px;border-top:1px solid var(--trait)"><input type="checkbox" checked aria-label="Proposée"></td></tr>
+<tr><td style="padding:8px;border-top:1px solid var(--trait)">Mieux traverser son deuil (cycle)</td><td style="padding:8px;border-top:1px solid var(--trait)"><input aria-label="Tarif deuil" placeholder="À fixer" style="width:100px;padding:8px;border-radius:10px;border:1.5px solid var(--trait)"></td><td style="padding:8px;border-top:1px solid var(--trait)">90</td><td style="padding:8px;border-top:1px solid var(--trait)"><input type="checkbox" checked aria-label="Proposée"></td></tr>
+<tr><td style="padding:8px;border-top:1px solid var(--trait)">Sophrologie, adolescents (cycle)</td><td style="padding:8px;border-top:1px solid var(--trait)"><input aria-label="Tarif sophrologie ados" placeholder="À fixer" style="width:100px;padding:8px;border-radius:10px;border:1.5px solid var(--trait)"></td><td style="padding:8px;border-top:1px solid var(--trait)">60</td><td style="padding:8px;border-top:1px solid var(--trait)"><input type="checkbox" checked aria-label="Proposée"></td></tr>
+<tr><td style="padding:8px;border-top:1px solid var(--trait)">Sophrologie, adultes (cycle)</td><td style="padding:8px;border-top:1px solid var(--trait)"><input aria-label="Tarif sophrologie adultes" placeholder="À fixer" style="width:100px;padding:8px;border-radius:10px;border:1.5px solid var(--trait)"></td><td style="padding:8px;border-top:1px solid var(--trait)">60</td><td style="padding:8px;border-top:1px solid var(--trait)"><input type="checkbox" checked aria-label="Proposée"></td></tr>
+<tr><td style="padding:8px;border-top:1px solid var(--trait)">Séance individuelle de sophrologie</td><td style="padding:8px;border-top:1px solid var(--trait)"><input aria-label="Tarif sophrologie" placeholder="À fixer" style="width:100px;padding:8px;border-radius:10px;border:1.5px solid var(--trait)"></td><td style="padding:8px;border-top:1px solid var(--trait)">60</td><td style="padding:8px;border-top:1px solid var(--trait)"><input type="checkbox" checked aria-label="Proposée"></td></tr>
+<tr><td style="padding:8px;border-top:1px solid var(--trait)">Séance individuelle d’EMDR-DSA</td><td style="padding:8px;border-top:1px solid var(--trait)"><input aria-label="Tarif EMDR" placeholder="À fixer" style="width:100px;padding:8px;border-radius:10px;border:1.5px solid var(--trait)"></td><td style="padding:8px;border-top:1px solid var(--trait)">90</td><td style="padding:8px;border-top:1px solid var(--trait)"><input type="checkbox" checked aria-label="Proposée"></td></tr>
+<tr><td style="padding:8px;border-top:1px solid var(--trait)">Séance de psychanalyse clinique</td><td style="padding:8px;border-top:1px solid var(--trait)"><input aria-label="Tarif psychanalyse" placeholder="À fixer" style="width:100px;padding:8px;border-radius:10px;border:1.5px solid var(--trait)"></td><td style="padding:8px;border-top:1px solid var(--trait)">60</td><td style="padding:8px;border-top:1px solid var(--trait)"><input type="checkbox" checked aria-label="Proposée"></td></tr>
+</tbody></table></div>
+<div class="btns"><button class="btn plein" type="button" disabled>Enregistrer les tarifs</button></div>
+</section>
+
+<section class="carte c12"><h2>Créer un groupe</h2>
+<form class="form2" onsubmit="return false">
+<label class="champ plein-l"><span>Activité</span><select><option>Soutien à la parentalité</option><option>Soutien aux aidants familiaux</option><option>Mieux traverser son deuil</option><option>Sophrologie et santé mentale, adolescents</option><option>Sophrologie et santé mentale, adultes</option></select></label>
+<label class="champ"><span>Première séance</span><input type="date" value="2027-01-14"></label>
+<label class="champ"><span>Nombre de séances</span><input type="number" value="6" min="1"></label>
+<label class="champ"><span>Horaire</span><input type="text" value="18 h 30 à 20 h"></label>
+<label class="champ"><span>Places</span><input type="number" value="8" min="1"></label>
+<label class="champ"><span>Tarif du cycle (€)</span><input type="number" placeholder="À fixer"></label>
+<label class="champ"><span>Lieu</span><select><option>Cabinet, Belleville-en-Beaujolais</option><option>Visio</option></select></label>
+<div class="btns plein-l"><button class="btn plein" type="button" disabled>Créer le groupe</button><span class="small muted" style="align-self:center">Le groupe s’affiche sur le site dès sa création, dans l’ordre d’ouverture.</span></div>
+</form>
+</section>
+</div>
+</main>
+</div>
+</body></html>
