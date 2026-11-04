@@ -1,0 +1,15 @@
+# Tout passe par index.php, sauf les fichiers qui existent (images, CSS, JS)
+Options -Indexes
+RewriteEngine On
+RewriteCond %{HTTPS} off
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^ index.php [L,QSA]
+<Files "routeur-dev.php">
+  Require all denied
+</Files>
+<IfModule mod_headers.c>
+  <FilesMatch "\.(webp|css|js)$">
+    Header set Cache-Control "public, max-age=2592000"
+  </FilesMatch>
+</IfModule>

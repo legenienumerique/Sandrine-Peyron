@@ -1,0 +1,5 @@
+app/config.php
+donnees/
+vendor/
+public/medias/
+php-local.ini
