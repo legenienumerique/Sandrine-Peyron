@@ -137,28 +137,31 @@ attendreErreur('saisie invalide refusée', fn () => versCentimes('abc'), 'invali
 
 echo "Rendez-vous individuels\n";
 nouvelleBase('2026-11-03 10:00:00'); // mardi
-db()->exec("UPDATE activites SET tarif_centimes = 6000 WHERE code = 'sophrologie'; UPDATE activites SET tarif_centimes = 8000 WHERE code = 'emdr'");
+db()->exec("UPDATE activites SET tarif_centimes = 6000 WHERE code = 'seance'");
+// Seconde offre individuelle plus longue, créée pour le test (le site n'en propose qu'une)
+db()->exec("INSERT INTO activites (code, type, nom, duree_minutes, tarif_centimes) VALUES ('longue', 'individuel', 'Séance longue', 90, 8000)");
 db()->exec("INSERT INTO disponibilites (jour, debut, fin, lieu) VALUES (3, '09:00', '12:00', 'Cabinet'), (4, '14:00', '17:00', 'Visio')");
-$sophro = activite('sophrologie');
+$sophro = activite('seance');
 $mer = creneauxDuJour($sophro, '2026-11-04');
 verifier('mercredi : moins de 24 h → aucun créneau avant 10 h', $mer[0]['debut'] === '2026-11-04 10:15:00');
 $jeu = creneauxDuJour($sophro, '2026-11-05');
 verifier('jeudi : créneaux 14 h, 15 h 15 (1 h + 15 min de battement)', array_column($jeu, 'debut') === ['2026-11-05 14:00:00', '2026-11-05 15:15:00']);
 verifier('lieu repris de la plage', $jeu[0]['lieu'] === 'Visio');
-$x = reserverRdv('sophrologie', '2026-11-05 14:00:00', client(1));
+$x = reserverRdv('seance', '2026-11-05 14:00:00', client(1));
 verifier('créneau bloqué pendant le paiement', array_column(creneauxDuJour($sophro, '2026-11-05'), 'debut') === ['2026-11-05 15:15:00']);
-attendreErreur('même créneau refusé', fn () => reserverRdv('sophrologie', '2026-11-05 14:00:00', client(2)), 'vient d’être pris');
-attendreErreur('créneau inventé refusé', fn () => reserverRdv('sophrologie', '2026-11-05 14:30:00', client(2)), 'vient d’être pris');
+attendreErreur('même créneau refusé', fn () => reserverRdv('seance', '2026-11-05 14:00:00', client(2)), 'vient d’être pris');
+attendreErreur('créneau inventé refusé', fn () => reserverRdv('seance', '2026-11-05 14:30:00', client(2)), 'vient d’être pris');
 payer('tr_0x');
 verifier('rendez-vous confirmé', reservation((int) $x['reservation']['id'])['statut'] === 'confirmee');
-$emdr = activite('emdr');
-verifier('EMDR (1 h 30) : plus de place le jeudi après le rendez-vous de 14 h', creneauxDuJour($emdr, '2026-11-05') === []);
+$emdr = activite('longue');
+verifier('séance de 1 h 30 : plus de place le jeudi après le rendez-vous de 14 h', creneauxDuJour($emdr, '2026-11-05') === []);
 db()->exec("INSERT INTO absences (debut, fin, motif) VALUES ('2026-11-11 00:00:00', '2026-11-12 00:00:00', 'Congés')");
 verifier('absence : aucun créneau', creneauxDuJour($sophro, '2026-11-11') === []);
 $gs = creerGroupe('sophro-adultes', 8, '2026-11-18 09:30:00', 1);
+verifier('une seule offre individuelle dans une base neuve', (int) ouvrirBase(':memory:')->query("SELECT COUNT(*) FROM activites WHERE type = 'individuel' AND actif = 1")->fetchColumn() === 1);
 verifier('séance de groupe : créneaux qui la chevauchent retirés', array_column(creneauxDuJour($sophro, '2026-11-18'), 'debut') === []);
-db()->exec("UPDATE disponibilites SET activites = 'emdr' WHERE jour = 3");
-verifier('plage réservée à l’EMDR : pas de sophrologie', creneauxDuJour($sophro, '2026-11-25') === [] && count(creneauxDuJour($emdr, '2026-11-25')) === 1);
+db()->exec("UPDATE disponibilites SET activites = 'longue' WHERE jour = 3");
+verifier('plage réservée à une offre : l’autre n’y est pas proposée', creneauxDuJour($sophro, '2026-11-25') === [] && count(creneauxDuJour($emdr, '2026-11-25')) === 1);
 
 echo "Factures\n";
 $f = facture(1);

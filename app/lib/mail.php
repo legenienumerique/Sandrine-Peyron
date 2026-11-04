@@ -39,7 +39,7 @@ function expedier(string $a, string $sujet, string $texte, array $joints = []): 
 
 function signature(): string
 {
-    return "\n\nSandrine Peyron\nSophrologie, EMDR-DSA, groupes de parole\n" . param('telephone') . "\n" . rtrim(config()['url'], '/');
+    return "\n\nSandrine Peyron\nAccompagnement individuel et en groupe\n" . param('telephone') . "\n" . rtrim(config()['url'], '/');
 }
 
 // Invitation de calendrier (.ics) pour une ou plusieurs dates

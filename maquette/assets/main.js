@@ -77,11 +77,10 @@
 
   // Agenda d'exemple : plages fictives, en attendant les vraies disponibilités de Sandrine
   const PLAGES = {
-    sophro: { 1: ['09:00', '10:00', '11:00'], 2: ['14:00', '15:00', '16:00', '17:00'], 3: ['09:00', '10:00', '11:00'], 4: ['14:00', '15:00', '16:00'], 5: ['09:00', '10:00'] },
-    emdr: { 2: ['09:00', '10:30'], 4: ['09:00', '10:30'], 5: ['14:00', '15:30'] }
+    seance: { 1: ['09:00', '10:15', '11:30'], 2: ['14:00', '15:15', '16:30'], 3: ['09:00', '10:15', '11:30'], 4: ['14:00', '15:15', '16:30'], 5: ['09:00', '10:15'] }
   };
-  const DUREE = { sophro: '1 h', emdr: '1 h 30' };
-  const NOM = { sophro: 'Séance individuelle de sophrologie', emdr: 'Séance individuelle d’EMDR-DSA' };
+  const DUREE = { seance: '1 h' };
+  const NOM = { seance: 'Séance individuelle' };
   $$('.agenda').forEach(ag => {
     const type = ag.dataset.type, jours = $('.jours', ag), cren = $('.creneaux', ag), titre = $('.choix', ag);
     const fmtJ = new Intl.DateTimeFormat('fr-FR', { weekday: 'short' });

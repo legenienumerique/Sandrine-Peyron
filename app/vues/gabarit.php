@@ -35,7 +35,7 @@ function entete(string $titre, string $description, string $actif = '', string $
         '<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;600&family=Newsreader:ital,opsz,wght@0,6..72,300..500;1,6..72,300..400&display=swap" rel="stylesheet">',
         '<link rel="stylesheet" href="/assets/style.css?v=', VERSION_ACTIFS, '">',
         '</head><body><a class="saut" href="#contenu">Aller au contenu</a>',
-        '<header class="top"><div class="wrap"><a class="marque" href="/"><img src="/assets/ph/logo.webp" alt="" width="44" height="44"><span><b>Sandrine Peyron</b><small>Sophrologie, EMDR-DSA, groupes</small></span></a>',
+        '<header class="top"><div class="wrap"><a class="marque" href="/"><img src="/assets/ph/logo.webp" alt="" width="44" height="44"><span><b>Sandrine Peyron</b><small>Accompagnement individuel et en groupe</small></span></a>',
         '<nav class="nav" aria-label="Menu principal">', $nav, '</nav><a class="btn plein" href="/seances">Réserver</a>',
         '<button class="burger" type="button" aria-expanded="false" aria-controls="mnav">Menu</button></div></header>',
         '<nav class="mnav" id="mnav" aria-label="Menu mobile">', $mnav, '<a class="btn plein" href="/seances">Réserver une séance</a></nav>',
@@ -48,10 +48,10 @@ function pied(bool $avecReservation = false): void
     $mail = param('email_sandrine');
     $liens = implode('', array_map(fn ($m) => "<li><a href=\"{$m[0]}\">{$m[1]}</a></li>", MENU));
     echo '</main><footer class="pied"><div class="wrap"><div class="cols">',
-        '<div><h3>Sandrine Peyron</h3><p>Sophrologue de courant caycédien, praticienne en EMDR-DSA, psychanalyste clinicienne.</p></div>',
+        '<div><h3>Sandrine Peyron</h3><p>Accompagnement individuel et en groupe, au cabinet de Belleville-en-Beaujolais ou en visio.</p></div>',
         '<div><h3>Cabinet</h3><p>', nl2br(h(param('facture_adresse'))), '</p></div>',
         '<div><h3>Contact</h3><ul><li><a href="tel:', h(telLien($tel)), '">', h($tel), '</a></li><li><a href="mailto:', h($mail), '">', h($mail), '</a></li></ul></div>',
-        '<div><h3>Pages</h3><ul>', $liens, '<li><a href="/psychanalyse">Psychanalyse clinique</a></li></ul></div>',
+        '<div><h3>Pages</h3><ul>', $liens, '</ul></div>',
         '</div><div class="bas"><span>© ', date('Y'), ' Sandrine Peyron. <a href="/mentions-legales">Mentions légales</a>, <a href="/confidentialite">confidentialité</a>, <a href="/conditions-de-vente">conditions de vente</a>.</span>',
         '<span>Site créé par <a href="https://legenienumerique.fr">Le Génie Numérique</a></span></div></div></footer>';
     if ($avecReservation) fenetreReservation();

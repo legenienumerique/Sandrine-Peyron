@@ -7,7 +7,7 @@ require RACINE . '/app/vues/gabarit.php';
 require RACINE . '/app/vues/contenus.php';
 require RACINE . '/app/vues/pages.php';
 
-const VERSION_ACTIFS = '1';
+const VERSION_ACTIFS = '2';
 
 $chemin = '/' . trim(rawurldecode((string) parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH)), '/');
 $methode = $_SERVER['REQUEST_METHOD'] ?? 'GET';
@@ -25,7 +25,7 @@ try {
         $chemin === '/groupes' => pageGroupes(),
         (bool) preg_match('#^/groupes/([a-z0-9-]+)$#', $chemin, $m) => pageGroupe($m[1]),
         $chemin === '/seances' => pageSeances(),
-        $chemin === '/psychanalyse' => pagePsychanalyse(),
+        $chemin === '/psychanalyse' => (function () { header('Location: /seances', true, 301); })(),
         $chemin === '/activites' => pageActivites(),
         (bool) preg_match('#^/activites/([a-z0-9-]+)$#', $chemin, $m) => pageArticle($m[1]),
         $chemin === '/a-propos' => pageAPropos(),
@@ -84,7 +84,7 @@ function sitemap(): void
 {
     header('Content-Type: application/xml; charset=utf-8');
     $url = rtrim(config()['url'], '/');
-    $pages = ['/', '/groupes', '/seances', '/psychanalyse', '/activites', '/a-propos', '/contact'];
+    $pages = ['/', '/groupes', '/seances', '/activites', '/a-propos', '/contact'];
     foreach (array_keys(CONTENUS_GROUPES) as $c) $pages[] = "/groupes/$c";
     foreach (articlesPublies() as $a) $pages[] = '/activites/' . $a['slug'];
     echo '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';

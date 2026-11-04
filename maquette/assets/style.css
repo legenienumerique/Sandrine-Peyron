@@ -239,3 +239,5 @@ dialog.resa::backdrop{background:rgba(28,53,51,.42)}
 .texte-article h2{font-size:clamp(1.6rem,3vw,2.2rem)}
 .alerte{border-left:3px solid #B4573E;background:#fbeee9;padding:12px 16px;border-radius:0 12px 12px 0}
 .succes{border-left:3px solid #4B7A55;background:#e8f2ea;padding:12px 16px;border-radius:0 12px 12px 0}
+.liste-act.colonnes{display:grid;grid-template-columns:1fr 1fr;column-gap:40px}
+@media (max-width:720px){.liste-act.colonnes{grid-template-columns:1fr}}

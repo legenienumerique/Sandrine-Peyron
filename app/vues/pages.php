@@ -26,28 +26,27 @@ function blocCabinet(): void
 
 function pageAccueil(): void
 {
-    entete('Sandrine Peyron, sophrologie, EMDR-DSA et groupes de parole à Belleville-en-Beaujolais',
-        'Séances individuelles de sophrologie et d’EMDR-DSA, groupes de parole et de sophrologie à Belleville-en-Beaujolais. Réservation et paiement en ligne.');
+    entete('Sandrine Peyron, accompagnement individuel et en groupe à Belleville-en-Beaujolais',
+        'Séances individuelles et groupes à Belleville-en-Beaujolais, au cabinet ou en visio. Réservation et paiement en ligne.');
     echo '<section class="hero"><div class="wrap"><div>',
         '<h1 class="entre">Prendre soin de soi, seul ou à plusieurs</h1>',
-        '<p class="lead entre d1">Sophrologie, EMDR-DSA et groupes de parole, au cabinet de Belleville-en-Beaujolais ou en visio.</p>',
-        '<div class="btns entre d2"><a class="btn plein" href="/groupes">Voir les groupes</a><a class="btn" href="/seances">Réserver une séance</a></div>',
+        '<p class="lead entre d1">Un accompagnement global, en séance individuelle ou en groupe, au cabinet de Belleville-en-Beaujolais ou en visio.</p>',
+        '<div class="btns entre d2"><a class="btn plein" href="/seances">Réserver une séance</a><a class="btn" href="/groupes">Voir les groupes</a></div>',
         '<p class="lieu entre d3">15 minutes de Villefranche-sur-Saône, 20 minutes de Mâcon, 45 minutes de Lyon.</p></div>',
         '<div class="souffle"><div class="forme">', VAGUES, '<p class="mot" aria-hidden="true">Inspirez…</p></div><button class="pause" type="button" aria-pressed="false">Pause</button></div>',
         '</div></section>',
-        '<section class="sec papier"><div class="wrap"><h2>Trois façons d’être accompagné</h2><ul class="offres">',
-        '<li><a href="/groupes#parole"><h3>Groupes de parole</h3><p>Soutien à la parentalité, aux aidants familiaux, et pour mieux traverser un deuil.</p><span class="fl" aria-hidden="true">›</span></a></li>',
-        '<li><a href="/groupes#sophro"><h3>Groupes de sophrologie</h3><p>Pour les adolescents et les adultes qui traversent une période de fragilité psychique.</p><span class="fl" aria-hidden="true">›</span></a></li>',
-        '<li><a href="/seances"><h3>Séances individuelles</h3><p>Sophrologie caycédienne, EMDR-DSA ou psychanalyse clinique, au cabinet ou en visio.</p><span class="fl" aria-hidden="true">›</span></a></li>',
+        '<section class="sec papier"><div class="wrap"><h2>Deux façons d’être accompagné</h2><ul class="offres">',
+        '<li><a href="/seances"><h3>Séances individuelles</h3><p>Un temps pour vous, construit à partir de votre demande. Au cabinet ou en visio.</p><span class="fl" aria-hidden="true">›</span></a></li>',
+        '<li><a href="/groupes"><h3>Groupes</h3><p>Parentalité, aidants familiaux, deuil, santé mentale des adolescents et des adultes. En petit effectif.</p><span class="fl" aria-hidden="true">›</span></a></li>',
         '</ul></div></section>',
         '<section class="sec"><div class="wrap"><div class="tete"><h2>Prochains groupes</h2><a href="/groupes">Tous les groupes</a></div>',
         '<p class="regle">Chaque groupe ouvre ses inscriptions quand le précédent est complet : les groupes restent à taille humaine.</p>';
-    blocGroupes(array_merge(activites('parole'), activites('sophro_groupe')), false, 4);
+    blocGroupes(activitesGroupes(), false, 4);
     echo '</div></section>',
         '<figure class="paysage"><img src="/assets/ph/beaujolais.webp" alt="Vignes du Beaujolais émergeant de la brume du matin" loading="lazy"></figure>',
         '<section class="sec"><div class="wrap duo"><div class="galet"><img src="/assets/ph/portrait.webp" alt="Portrait de Sandrine Peyron, souriante, en extérieur" loading="lazy"></div><div>',
         '<h2>Sandrine Peyron</h2><p class="lead">Après 36 ans dans le développement social, auprès des familles, j’ai repris mes études à 45 ans pour accompagner autrement.</p>',
-        '<p>Sophrologue de courant caycédien, praticienne en EMDR-DSA et psychanalyste clinicienne, je veille à créer un espace sûr, où chacun avance à son rythme.</p><a href="/a-propos">Mon parcours</a>',
+        '<p>Formée à plusieurs approches, je les relie pour proposer un accompagnement qui part de la personne, pas d’une méthode. Je veille à créer un espace sûr, où chacun avance à son rythme.</p><a href="/a-propos">Mon parcours</a>',
         '<div class="labels"><img src="/assets/ph/ecoles-sophro.webp" alt="Écoles de Sophrologie Caycédienne" loading="lazy"><img src="/assets/ph/chambre-syndicale.webp" alt="Chambre syndicale de la sophrologie" loading="lazy"></div>',
         '</div></div></section>';
     $articles = articlesPublies(3);
@@ -63,23 +62,18 @@ function pageAccueil(): void
 
 function pageGroupes(): void
 {
-    entete('Groupes de parole et de sophrologie à Belleville-en-Beaujolais, Sandrine Peyron',
-        'Groupes de parole (parentalité, aidants familiaux, deuil) et groupes de sophrologie pour adolescents et adultes. Places limitées, réservation en ligne.', '/groupes');
+    entete('Groupes à Belleville-en-Beaujolais, Sandrine Peyron',
+        'Groupes en petit effectif : parentalité, aidants familiaux, deuil, santé mentale des adolescents et des adultes. Réservation en ligne.', '/groupes');
     echo '<section class="ptete"><div class="wrap duo" style="grid-template-columns:1.1fr .9fr"><div><h1>Avancer ensemble, en petit groupe</h1>',
         '<p class="lead">Quelques personnes qui vivent la même chose, un cadre bienveillant, une séance par semaine. Places limitées.</p></div>',
         '<div class="galet" style="aspect-ratio:16/11"><img src="/assets/ph/cercle.webp" alt="Des chaises disposées en cercle"></div></div></section>',
-        '<section class="sec papier" style="padding-top:64px"><div class="wrap"><div class="deux">';
-    foreach ([['parole', 'Groupes de parole', 'Un lieu pour déposer ce qui pèse, être écouté et entendre d’autres vécus.'], ['sophro', 'Groupes de sophrologie', 'Respiration, relaxation dynamique et visualisation, pour retrouver un appui. Ces groupes complètent un suivi médical, ils ne le remplacent pas.']] as [$id, $titre, $texte]) {
-        echo "<div id=\"$id\"><h2>$titre</h2><p>$texte</p><ul class=\"liste-act\">";
-        foreach (activites($id === 'parole' ? 'parole' : 'sophro_groupe') as $a) {
-            echo '<li><a href="/groupes/', h($a['code']), '"><b>', h($a['nom']), '</b><span>', h($a['resume']), '</span></a></li>';
-        }
-        echo '</ul></div>';
+        '<section class="sec papier" style="padding-top:64px"><div class="wrap"><h2>Les groupes</h2><p>Un lieu pour déposer ce qui pèse, être écouté, entendre d’autres vécus et repartir avec des outils simples.</p><ul class="liste-act colonnes">';
+    foreach (activitesGroupes() as $a) {
+        echo '<li><a href="/groupes/', h($a['code']), '"><b>', h($a['nom']), '</b><span>', h($a['resume']), '</span></a></li>';
     }
-    echo '</div></div></section><section class="sec"><div class="wrap"><h2>Dates et inscriptions</h2>',
-        '<div class="filtres" data-filtres="#liste-groupes" role="group" aria-label="Filtrer les groupes"><button type="button" data-f="tous" aria-pressed="true">Tous</button><button type="button" data-f="parole" aria-pressed="false">Groupes de parole</button><button type="button" data-f="sophro" aria-pressed="false">Sophrologie</button></div>';
-    blocGroupes(array_merge(activites('parole'), activites('sophro_groupe')));
-    echo '<p class="regle">Comment ça marche : vous réservez et payez en ligne, votre place est confirmée par e-mail avec les dates à ajouter à votre agenda. Le groupe suivant d’une même activité ouvre quand celui-ci est complet.</p></div></section>';
+    echo '</ul></div></section><section class="sec"><div class="wrap"><h2>Dates et inscriptions</h2>';
+    blocGroupes(activitesGroupes());
+    echo '<p class="regle">Comment ça marche : vous réservez et payez en ligne, votre place est confirmée par e-mail avec les dates à ajouter à votre agenda. Le groupe suivant d’un même thème ouvre quand celui-ci est complet.</p></div></section>';
     pied(true);
 }
 
@@ -87,7 +81,7 @@ function pageGroupe(string $code): void
 {
     $a = activite($code);
     $c = CONTENUS_GROUPES[$code] ?? null;
-    if (!$a || !$c || !in_array($a['type'], ['parole', 'sophro_groupe'], true)) { pageErreur(404, 'Page introuvable', 'Cette page n’existe pas ou plus.'); return; }
+    if (!$a || !$c || $a['type'] === 'individuel') { pageErreur(404, 'Page introuvable', 'Cette page n’existe pas ou plus.'); return; }
     entete($a['nom'] . ' à Belleville-en-Beaujolais, Sandrine Peyron', $c['accroche'], '/groupes');
     $tarif = $a['tarif_centimes'] !== null ? euros((int) $a['tarif_centimes']) . ' le cycle' : 'Tarif communiqué prochainement';
     echo '<section class="ptete"><div class="wrap duo" style="grid-template-columns:1.1fr .9fr"><div>',
@@ -110,7 +104,7 @@ function pageGroupe(string $code): void
 function blocAgenda(array $a): void
 {
     if ($a['tarif_centimes'] === null || !mollieActif()) {
-        echo '<div class="agenda"><h3>Prendre rendez-vous</h3><p>La réservation en ligne de cette séance ouvre bientôt. En attendant, appelez Sandrine au <a href="tel:', h(telLien(param('telephone'))), '">', h(param('telephone')), '</a>.</p></div>';
+        echo '<div class="agenda"><h3>Prendre rendez-vous</h3><p>La réservation en ligne ouvre bientôt. En attendant, appelez Sandrine au <a href="tel:', h(telLien(param('telephone'))), '">', h(param('telephone')), '</a>.</p></div>';
         return;
     }
     echo '<div class="agenda" data-activite="', h($a['code']), '" data-titre="', h($a['nom']), '" data-prix="', h(euros((int) $a['tarif_centimes'])), '" data-duree="', (int) $a['duree_minutes'], ' min">',
@@ -118,47 +112,26 @@ function blocAgenda(array $a): void
         '<noscript><p>Pour réserver, activez JavaScript ou appelez le ', h(param('telephone')), '.</p></noscript></div>';
 }
 
+// Une seule offre individuelle : Sandrine choisit avec la personne les outils adaptés (demande du 04/11/2026)
 function pageSeances(): void
 {
-    entete('Séances individuelles de sophrologie et d’EMDR-DSA à Belleville-en-Beaujolais',
-        'Réservez en ligne une séance individuelle de sophrologie caycédienne ou d’EMDR-DSA avec Sandrine Peyron, au cabinet ou en visio.', '/seances');
-    $sophro = activite('sophrologie');
-    $emdr = activite('emdr');
-    echo '<section class="ptete"><div class="wrap duo" style="grid-template-columns:1.1fr .9fr"><div><h1>Séances individuelles</h1><p class="lead">Choisissez l’accompagnement, puis un créneau libre. La réservation se règle en ligne.</p>',
-        '<p class="small muted">Vous cherchez la psychanalyse clinique ? <a href="/psychanalyse">C’est par ici</a>.</p></div>',
+    entete('Séances individuelles à Belleville-en-Beaujolais, Sandrine Peyron',
+        'Un accompagnement individuel global, construit à partir de votre demande, au cabinet ou en visio. Réservation en ligne.', '/seances');
+    $s = activite('seance');
+    echo '<section class="ptete"><div class="wrap duo" style="grid-template-columns:1.1fr .9fr"><div><h1>Séances individuelles</h1>',
+        '<p class="lead">Un temps pour vous, construit à partir de votre demande. Vous n’avez pas à choisir une méthode : on en parle ensemble.</p></div>',
         '<div class="galet" style="aspect-ratio:1"><img src="/assets/ph/the.webp" alt="Deux mains tiennent une tasse de thé chaude"></div></div></section>',
-        '<section class="sec papier" style="padding-top:56px"><div class="wrap">',
-        '<div class="onglets" role="tablist" aria-label="Type de séance"><button role="tab" id="t-sophro" aria-controls="p-sophro" aria-selected="true">Sophrologie</button><button role="tab" id="t-emdr" aria-controls="p-emdr" aria-selected="false" tabindex="-1">EMDR-DSA</button></div>',
-        '<div class="panneau" id="p-sophro" role="tabpanel" aria-labelledby="t-sophro"><div class="deux"><div class="prose"><h2 style="margin-top:0">Sophrologie caycédienne</h2>',
-        '<p>Une méthode fondée par le neuropsychiatre Alfonso Caycedo, qui associe respiration, relaxation dynamique, visualisation et méditation.</p>',
-        '<p>Pour gagner en confiance et en estime de soi, diminuer le stress et l’anxiété, gérer la douleur ou les acouphènes, mieux dormir, préparer un examen ou une prise de parole.</p>',
-        '<p class="small muted">La sophrologie n’est pas une pratique médicale et ne remplace pas un traitement. Elle peut compléter un suivi médical.</p></div>',
-        '<div class="fiche"><dl><dt>Durée</dt><dd>', (int) $sophro['duree_minutes'], ' minutes</dd><dt>Lieu</dt><dd>Selon le créneau : cabinet ou visio</dd><dt>Tarif</dt><dd>', h(euros($sophro['tarif_centimes'] === null ? null : (int) $sophro['tarif_centimes'])), '</dd></dl></div></div>';
-    blocAgenda($sophro);
-    echo '</div><div class="panneau" id="p-emdr" role="tabpanel" aria-labelledby="t-emdr" hidden><div class="deux"><div class="prose"><h2 style="margin-top:0">EMDR-DSA</h2>',
-        '<p>Une thérapie brève par stimulations alternées (visuelles, auditives ou tactiles), pour retraiter des souvenirs qui pèsent encore sur le présent.</p>',
-        '<p>On part d’une « clé d’entrée » : une situation passée ou à venir, une émotion, un ressenti dans le corps ou une pensée négative.</p>',
-        '<p>Du simple stress aux traumatismes complexes, mais aussi douleurs chroniques, deuils ou préparation mentale. Certains troubles relèvent d’un suivi par un spécialiste de santé.</p></div>',
-        '<div class="fiche"><dl><dt>Durée</dt><dd>', (int) $emdr['duree_minutes'], ' minutes</dd><dt>Lieu</dt><dd>Selon le créneau : cabinet ou visio</dd><dt>Tarif</dt><dd>', h(euros($emdr['tarif_centimes'] === null ? null : (int) $emdr['tarif_centimes'])), '</dd></dl></div></div>',
-        '<figure class="paysage" style="margin:40px 0 0;aspect-ratio:21/7"><img src="/assets/ph/regard.webp" alt="Gros plan sur un œil" loading="lazy"></figure>';
-    blocAgenda($emdr);
-    echo '</div></div></section>';
-    pied(true);
-}
-
-function pagePsychanalyse(): void
-{
-    entete('Psychanalyse clinique à Belleville-en-Beaujolais, Sandrine Peyron', 'Un dispositif d’écoute fondé sur la parole, pour interroger son rapport à soi, aux autres et à son histoire.', '/seances');
-    $a = activite('psychanalyse');
-    echo '<section class="ptete"><div class="wrap duo" style="grid-template-columns:1.1fr .9fr"><div><h1>Psychanalyse clinique</h1>',
-        '<p class="lead">Un dispositif d’écoute et d’élaboration fondé sur la parole, pour interroger son rapport à soi, aux autres et à son histoire.</p></div>',
-        '<div class="galet"><img src="/assets/ph/psychanalyse.webp" alt="Un étang dans la brume du matin, entre les arbres"></div></div></section>',
-        '<section class="sec papier"><div class="wrap deux"><div class="prose">',
-        '<p>La psychanalyse clinique s’adresse à toute personne qui souhaite comprendre ce qui se répète dans sa vie : symptômes, conflits internes, difficultés relationnelles.</p>',
-        '<p>Par l’association libre et dans le cadre du transfert, ces manifestations de la souffrance psychique peuvent prendre sens. Le travail permet peu à peu de déplacer sa manière de se penser, de désirer et de vivre.</p>',
-        '<p>Sandrine est reconnue psychanalyste clinicienne au sein de la Collégiale Psychanalytique de l’Ain, après 19 ans de réflexion en psychanalyse lacanienne.</p></div><div>';
-    blocAgenda($a);
-    echo '</div></div></section>';
+        '<section class="sec papier" style="padding-top:56px"><div class="wrap"><div class="deux"><div class="prose">',
+        '<h2 style="margin-top:0">Un accompagnement global</h2>',
+        '<p>Chaque personne arrive avec son histoire et sa demande. Sandrine s’appuie sur l’ensemble de ses formations, l’écoute, le travail sur le corps et la respiration, le retraitement des souvenirs difficiles, pour construire avec vous l’accompagnement qui vous convient.</p>',
+        '<h2>Pour quoi venir ?</h2><ul>',
+        '<li>Stress, anxiété, émotions qui débordent</li><li>Confiance et estime de soi</li><li>Sommeil, douleurs, acouphènes</li>',
+        '<li>Événements difficiles, traumatismes, deuils</li><li>Préparer un examen, une prise de parole, une échéance</li><li>Comprendre ce qui se répète dans sa vie</li></ul>',
+        '<p class="small muted">Cet accompagnement ne remplace pas un traitement médical. Il peut le compléter.</p></div>',
+        '<div><div class="fiche"><dl><dt>Durée</dt><dd>', (int) $s['duree_minutes'], ' minutes environ</dd><dt>Lieu</dt><dd>Selon le créneau : cabinet ou visio</dd><dt>Tarif</dt><dd>', h(euros($s['tarif_centimes'] === null ? null : (int) $s['tarif_centimes'])), '</dd></dl></div>',
+        '<div class="prose" style="margin-top:32px"><h2 style="margin-top:0">La première séance</h2><p>Un temps d’échange pour comprendre ce qui vous amène et définir ensemble la façon de travailler.</p></div></div></div>';
+    blocAgenda($s);
+    echo '</div></section>';
     pied(true);
 }
 

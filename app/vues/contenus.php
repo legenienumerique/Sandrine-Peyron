@@ -15,7 +15,7 @@ const CONTENUS_GROUPES = [
         'accroche' => 'Accompagner un proche malade, âgé ou en situation de handicap use en silence. Ici, c’est vous qu’on écoute.',
         'image' => 'aidants', 'alt' => 'Plusieurs mains se tiennent dans un geste de soutien',
         'pour_qui' => ['Conjoints, enfants, parents, amis qui accompagnent un proche au quotidien', 'Que l’aide soit récente ou dure depuis des années', 'Que le proche vive à domicile ou en établissement'],
-        'deroule' => ['Un temps pour dire où l’on en est', 'Des échanges entre aidants : ce qui épuise, ce qui aide, ce qu’on n’ose pas dire ailleurs', 'Des outils simples de sophrologie pour récupérer et poser ses limites'],
+        'deroule' => ['Un temps pour dire où l’on en est', 'Des échanges entre aidants : ce qui épuise, ce qui aide, ce qu’on n’ose pas dire ailleurs', 'Des outils simples pour récupérer et poser ses limites'],
     ],
     'deuil' => [
         'titre' => 'Mieux traverser son deuil',
@@ -25,19 +25,19 @@ const CONTENUS_GROUPES = [
         'deroule' => ['Un accueil en douceur, à son rythme', 'La parole autour de la personne disparue, des souvenirs, de ce qui change', 'Un moment de relaxation guidée pour clore la séance'],
     ],
     'sophro-ados' => [
-        'titre' => 'Sophrologie pour les adolescents',
+        'titre' => 'Retrouver un appui, pour les adolescents',
         'accroche' => 'Respirer, se poser, retrouver un appui quand l’anxiété, le stress ou le mal-être prennent de la place.',
         'image' => 'ados', 'alt' => 'Un jeune assis seul au bout d’un ponton, face à l’eau',
         'pour_qui' => ['Adolescents vivant anxiété, stress scolaire, troubles du sommeil ou passage difficile', 'Adolescents suivis pour un trouble de santé mentale, en complément de leur suivi', 'L’inscription est faite par un parent ou responsable légal'],
         'deroule' => ['Des exercices de respiration et de relaxation dynamique, doux et accessibles', 'Des visualisations pour retrouver confiance et calme', 'Un court temps d’échange, sans obligation de parler'],
-        'avertissement' => 'La sophrologie n’est pas un soin médical. Ces groupes complètent un suivi médical ou psychologique, ils ne le remplacent pas.',
+        'avertissement' => 'Ces groupes ne sont pas un soin médical : ils complètent un suivi médical ou psychologique, ils ne le remplacent pas.',
     ],
     'sophro-adultes' => [
-        'titre' => 'Sophrologie et santé mentale, adultes',
+        'titre' => 'Retrouver un appui, pour les adultes',
         'accroche' => 'Des outils concrets pour traverser stress, anxiété, épuisement ou une période de fragilité, en petit groupe.',
         'image' => 'adultes', 'alt' => 'Une personne de dos face à un lac calme, à l’aube',
-        'pour_qui' => ['Adultes vivant stress, anxiété, troubles du sommeil ou épuisement', 'Personnes suivies pour un trouble de santé mentale, en complément de leur suivi', 'Aucune expérience de la sophrologie n’est nécessaire'],
+        'pour_qui' => ['Adultes vivant stress, anxiété, troubles du sommeil ou épuisement', 'Personnes suivies pour un trouble de santé mentale, en complément de leur suivi', 'Aucune expérience n’est nécessaire'],
         'deroule' => ['Respiration et relaxation dynamique, assis ou debout', 'Visualisations pour ancrer le calme et les ressources', 'Partage libre des ressentis, puis un exercice à refaire chez soi'],
-        'avertissement' => 'La sophrologie n’est pas un soin médical. Ces groupes complètent un suivi médical ou psychologique, ils ne le remplacent pas.',
+        'avertissement' => 'Ces groupes ne sont pas un soin médical : ils complètent un suivi médical ou psychologique, ils ne le remplacent pas.',
     ],
 ];

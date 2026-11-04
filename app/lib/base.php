@@ -67,12 +67,16 @@ function initialiser(PDO $pdo): void
             ['parentalite', 'parole', 'Soutien à la parentalité', 'Les questions et les fatigues de parent, partagées en petit groupe.', 90, 1],
             ['aidants', 'parole', 'Soutien aux aidants familiaux', 'Pour celles et ceux qui accompagnent un proche malade, âgé ou en situation de handicap.', 90, 2],
             ['deuil', 'parole', 'Mieux traverser son deuil', 'Un espace pour la perte et ce qui suit, à son rythme.', 90, 3],
-            ['sophro-ados', 'sophro_groupe', 'Sophrologie et santé mentale, adolescents', 'Respirer, se poser, retrouver un appui quand l’anxiété prend de la place.', 60, 4],
-            ['sophro-adultes', 'sophro_groupe', 'Sophrologie et santé mentale, adultes', 'Des outils simples pour traverser stress, anxiété ou passage difficile.', 60, 5],
-            ['sophrologie', 'individuel', 'Séance individuelle de sophrologie', 'Sophrologie caycédienne, 45 minutes à 1 heure.', 60, 6],
-            ['emdr', 'individuel', 'Séance individuelle d’EMDR-DSA', 'Thérapie brève par stimulations alternées, 1 heure à 1 heure 30.', 90, 7],
-            ['psychanalyse', 'individuel', 'Séance de psychanalyse clinique', 'Un espace de parole et d’élaboration.', 60, 8],
+            ['sophro-ados', 'sophro_groupe', 'Santé mentale, adolescents', 'Respirer, se poser, retrouver un appui quand l’anxiété prend de la place.', 60, 4],
+            ['sophro-adultes', 'sophro_groupe', 'Santé mentale, adultes', 'Des outils simples pour traverser stress, anxiété ou passage difficile.', 60, 5],
+            ['seance', 'individuel', 'Séance individuelle', 'Un accompagnement personnalisé, au cabinet ou en visio.', 60, 6],
         ] as $a) $ins->execute($a);
+    }
+    // Demande de Sandrine (04/11/2026) : pas de catégories par méthode, une seule « séance individuelle »
+    if (!$pdo->query("SELECT COUNT(*) FROM activites WHERE code = 'seance'")->fetchColumn()) {
+        $pdo->exec("UPDATE activites SET code = 'seance', nom = 'Séance individuelle', resume = 'Un accompagnement personnalisé, au cabinet ou en visio.' WHERE code = 'sophrologie'");
+        $pdo->exec("UPDATE activites SET actif = 0 WHERE code IN ('emdr', 'psychanalyse')");
+        $pdo->exec("UPDATE activites SET nom = 'Santé mentale, adolescents' WHERE code = 'sophro-ados'; UPDATE activites SET nom = 'Santé mentale, adultes' WHERE code = 'sophro-adultes'");
     }
     $defauts = [
         'blocage_minutes' => '15',
@@ -164,6 +168,12 @@ function activite(string|int $codeOuId): ?array
     $s = db()->prepare(is_int($codeOuId) ? 'SELECT * FROM activites WHERE id = ?' : 'SELECT * FROM activites WHERE code = ?');
     $s->execute([$codeOuId]);
     return $s->fetch() ?: null;
+}
+
+// Tous les groupes, sans distinction de thème (parole, santé mentale)
+function activitesGroupes(): array
+{
+    return db()->query("SELECT * FROM activites WHERE type != 'individuel' AND actif = 1 ORDER BY ordre")->fetchAll();
 }
 
 function activites(?string $type = null): array

@@ -206,7 +206,7 @@ function gTableau(): void
 
         echo '<section class="carte c7"><h2>Groupes en cours d’inscription</h2>';
         $vu = false;
-        foreach (array_merge(activites('parole'), activites('sophro_groupe')) as $a) {
+        foreach (activitesGroupes() as $a) {
             foreach (groupesActivite($a) as $g) {
                 if (!in_array($g['etat'], ['ouvert', 'attente', 'complet', 'verrouille'], true)) continue;
                 $vu = true;
@@ -248,7 +248,7 @@ function evenements(string $de, string $a): array
 function gAgenda(bool $post): void
 {
     $jours = [1 => 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
-    $indiv = activites('individuel');
+    $indiv = array_values(array_filter(activites('individuel'), fn ($a) => $a['actif']));
     if ($post) {
         $action = $_POST['action'] ?? '';
         if ($action === 'ajouter_dispo') {
@@ -291,9 +291,9 @@ function gAgenda(bool $post): void
             '<label class="champ"><span>Jour</span><select name="jour">';
         foreach ($jours as $n => $j) echo "<option value=\"$n\">$j</option>";
         echo '</select></label>', champ('Lieu', 'lieu', 'Cabinet, Belleville-en-Beaujolais'), champ('De', 'debut', '09:00', 'time', 'required'), champ('À', 'fin', '12:00', 'time', 'required'),
-            '<fieldset class="plein-l"><legend>Séances proposées</legend>';
+            count($indiv) > 1 ? '<fieldset class="plein-l"><legend>Séances proposées</legend>' : '<div hidden>';
         foreach ($indiv as $a) echo '<label class="coche"><input type="checkbox" name="activites[]" value="', h($a['code']), '" checked><span>', h($a['nom']), '</span></label>';
-        echo '</fieldset><div class="btns plein-l"><button class="btn plein">Ajouter la plage</button></div></form></section>',
+        echo count($indiv) > 1 ? '</fieldset>' : '</div>', '<div class="btns plein-l"><button class="btn plein">Ajouter la plage</button></div></form></section>',
             '<section class="carte c5"><h2>Absences</h2>';
         $abs = db()->prepare('SELECT * FROM absences WHERE fin >= ? ORDER BY debut');
         $abs->execute([horodatage()]);
@@ -310,7 +310,7 @@ function gAgenda(bool $post): void
 // ---------- Groupes ----------
 function gGroupes(bool $post): void
 {
-    $types = array_merge(activites('parole'), activites('sophro_groupe'));
+    $types = activitesGroupes();
     if ($post) {
         $a = activite((int) ($_POST['activite'] ?? 0));
         $date = (string) ($_POST['date'] ?? ''); $h = (string) ($_POST['heure'] ?? '');
@@ -614,7 +614,7 @@ function gParametres(bool $post): void
     if ($post) {
         $quoi = $_POST['section'] ?? '';
         if ($quoi === 'tarifs') {
-            foreach (activites() as $a) {
+            foreach (activitesReglables() as $a) {
                 $k = $a['code'];
                 $duree = (int) ($_POST["duree_$k"] ?? $a['duree_minutes']);
                 if ($duree < 15 || $duree > 480) throw new InvalidArgumentException('Durée invalide pour ' . $a['nom'] . '.');
@@ -650,7 +650,7 @@ function gParametres(bool $post): void
     gPage('Paramètres', '/gestion/parametres', function () use ($regles, $coord) {
         echo '<section class="carte" id="tarifs"><h2>Tarifs et durées</h2><p class="small muted">Laissez le tarif vide tant qu’il n’est pas fixé : la réservation en ligne reste fermée pour cette activité. Pour un groupe, le tarif est celui du cycle complet ; vous pouvez aussi fixer un tarif propre à un groupe.</p>',
             '<form method="post">', csrf(), '<input type="hidden" name="section" value="tarifs"><div class="tableau"><table><thead><tr><th>Activité</th><th>Tarif (€)</th><th>Durée (min)</th><th>Proposée</th></tr></thead><tbody>';
-        foreach (activites() as $a) {
+        foreach (activitesReglables() as $a) {
             $k = h($a['code']);
             echo '<tr><td>', h($a['nom']), '</td><td><input class="court" name="tarif_', $k, '" value="', $a['tarif_centimes'] === null ? '' : number_format($a['tarif_centimes'] / 100, 2, ',', ''), '" inputmode="decimal" aria-label="Tarif ', h($a['nom']), '"></td>',
                 '<td><input class="court" type="number" min="15" max="480" name="duree_', $k, '" value="', (int) $a['duree_minutes'], '" aria-label="Durée ', h($a['nom']), '"></td>',
@@ -671,4 +671,10 @@ function gParametres(bool $post): void
         foreach (db()->query('SELECT * FROM journal ORDER BY id DESC LIMIT 30')->fetchAll() as $j) echo '<div class="ligne" style="grid-template-columns:auto 1fr"><span class="small muted">', h(dateLongue($j['quand'])), '</span><span>', h($j['qui']), ' : ', h($j['action']), $j['detail'] ? ' <span class="muted">' . h($j['detail']) . '</span>' : '', '</span></div>';
         echo '</section>';
     });
+}
+
+// Anciennes activités par méthode (EMDR, psychanalyse) retirées le 04/11/2026 : plus affichées
+function activitesReglables(): array
+{
+    return array_values(array_filter(activites(), fn ($a) => !in_array($a['code'], ['emdr', 'psychanalyse'], true)));
 }

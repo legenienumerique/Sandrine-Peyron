@@ -6,7 +6,7 @@
 <link rel="icon" href="assets/ph/logo.webp">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;600&family=Newsreader:ital,opsz,wght@0,6..72,300..500;1,6..72,300..400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css?v=4">
+<link rel="stylesheet" href="assets/style.css?v=5">
 <style>
 body{background:var(--papier)}
 .bo{display:grid;grid-template-columns:240px 1fr;min-height:100vh}
@@ -65,8 +65,8 @@ body{background:var(--papier)}
 
 <div class="grille">
 <section class="carte c7"><h2>Aujourd’hui</h2>
-<div class="ligne"><b>09 h 00</b><span>Claire M., EMDR-DSA, cabinet</span><span class="etat-p ok">Payé</span></div>
-<div class="ligne"><b>10 h 30</b><span>Julien R., EMDR-DSA, visio</span><span class="etat-p ok">Payé</span></div>
+<div class="ligne"><b>09 h 00</b><span>Claire M., séance individuelle, cabinet</span><span class="etat-p ok">Payé</span></div>
+<div class="ligne"><b>10 h 30</b><span>Julien R., séance individuelle, visio</span><span class="etat-p ok">Payé</span></div>
 <div class="ligne"><b>14 h 00</b><span>Groupe aidants familiaux, séance 1 sur 5 (8 inscrits)</span><span class="etat-p">Groupe</span></div>
 </section>
 <section class="carte c5"><h2>Encaissé en novembre</h2>
@@ -75,7 +75,7 @@ body{background:var(--papier)}
 </section>
 
 <section class="carte c7"><h2>Groupes en cours d’inscription</h2>
-<div class="gl"><b>Sophrologie adultes, groupe 1</b><div class="barre"><i style="width:70%"></i></div><span class="small muted">7 sur 10. Le groupe 2 ouvrira automatiquement à 10.</span></div>
+<div class="gl"><b>Santé mentale adultes, groupe 1</b><div class="barre"><i style="width:70%"></i></div><span class="small muted">7 sur 10. Le groupe 2 ouvrira automatiquement à 10.</span></div>
 <div class="gl"><b>Parentalité, groupe 1</b><div class="barre"><i style="width:62%"></i></div><span class="small muted">5 sur 8</span></div>
 <div class="gl"><b>Aidants familiaux, groupe 2</b><div class="barre"><i style="width:25%"></i></div><span class="small muted">2 sur 8</span></div>
 </section>
@@ -91,18 +91,16 @@ body{background:var(--papier)}
 <tr><td style="padding:8px;border-top:1px solid var(--trait)">Soutien à la parentalité (cycle)</td><td style="padding:8px;border-top:1px solid var(--trait)"><input aria-label="Tarif parentalité" placeholder="À fixer" style="width:100px;padding:8px;border-radius:10px;border:1.5px solid var(--trait)"></td><td style="padding:8px;border-top:1px solid var(--trait)">90</td><td style="padding:8px;border-top:1px solid var(--trait)"><input type="checkbox" checked aria-label="Proposée"></td></tr>
 <tr><td style="padding:8px;border-top:1px solid var(--trait)">Soutien aux aidants familiaux (cycle)</td><td style="padding:8px;border-top:1px solid var(--trait)"><input aria-label="Tarif aidants" placeholder="À fixer" style="width:100px;padding:8px;border-radius:10px;border:1.5px solid var(--trait)"></td><td style="padding:8px;border-top:1px solid var(--trait)">90</td><td style="padding:8px;border-top:1px solid var(--trait)"><input type="checkbox" checked aria-label="Proposée"></td></tr>
 <tr><td style="padding:8px;border-top:1px solid var(--trait)">Mieux traverser son deuil (cycle)</td><td style="padding:8px;border-top:1px solid var(--trait)"><input aria-label="Tarif deuil" placeholder="À fixer" style="width:100px;padding:8px;border-radius:10px;border:1.5px solid var(--trait)"></td><td style="padding:8px;border-top:1px solid var(--trait)">90</td><td style="padding:8px;border-top:1px solid var(--trait)"><input type="checkbox" checked aria-label="Proposée"></td></tr>
-<tr><td style="padding:8px;border-top:1px solid var(--trait)">Sophrologie, adolescents (cycle)</td><td style="padding:8px;border-top:1px solid var(--trait)"><input aria-label="Tarif sophrologie ados" placeholder="À fixer" style="width:100px;padding:8px;border-radius:10px;border:1.5px solid var(--trait)"></td><td style="padding:8px;border-top:1px solid var(--trait)">60</td><td style="padding:8px;border-top:1px solid var(--trait)"><input type="checkbox" checked aria-label="Proposée"></td></tr>
-<tr><td style="padding:8px;border-top:1px solid var(--trait)">Sophrologie, adultes (cycle)</td><td style="padding:8px;border-top:1px solid var(--trait)"><input aria-label="Tarif sophrologie adultes" placeholder="À fixer" style="width:100px;padding:8px;border-radius:10px;border:1.5px solid var(--trait)"></td><td style="padding:8px;border-top:1px solid var(--trait)">60</td><td style="padding:8px;border-top:1px solid var(--trait)"><input type="checkbox" checked aria-label="Proposée"></td></tr>
-<tr><td style="padding:8px;border-top:1px solid var(--trait)">Séance individuelle de sophrologie</td><td style="padding:8px;border-top:1px solid var(--trait)"><input aria-label="Tarif sophrologie" placeholder="À fixer" style="width:100px;padding:8px;border-radius:10px;border:1.5px solid var(--trait)"></td><td style="padding:8px;border-top:1px solid var(--trait)">60</td><td style="padding:8px;border-top:1px solid var(--trait)"><input type="checkbox" checked aria-label="Proposée"></td></tr>
-<tr><td style="padding:8px;border-top:1px solid var(--trait)">Séance individuelle d’EMDR-DSA</td><td style="padding:8px;border-top:1px solid var(--trait)"><input aria-label="Tarif EMDR" placeholder="À fixer" style="width:100px;padding:8px;border-radius:10px;border:1.5px solid var(--trait)"></td><td style="padding:8px;border-top:1px solid var(--trait)">90</td><td style="padding:8px;border-top:1px solid var(--trait)"><input type="checkbox" checked aria-label="Proposée"></td></tr>
-<tr><td style="padding:8px;border-top:1px solid var(--trait)">Séance de psychanalyse clinique</td><td style="padding:8px;border-top:1px solid var(--trait)"><input aria-label="Tarif psychanalyse" placeholder="À fixer" style="width:100px;padding:8px;border-radius:10px;border:1.5px solid var(--trait)"></td><td style="padding:8px;border-top:1px solid var(--trait)">60</td><td style="padding:8px;border-top:1px solid var(--trait)"><input type="checkbox" checked aria-label="Proposée"></td></tr>
+<tr><td style="padding:8px;border-top:1px solid var(--trait)">Santé mentale, adolescents (cycle)</td><td style="padding:8px;border-top:1px solid var(--trait)"><input aria-label="Tarif santé mentale ados" placeholder="À fixer" style="width:100px;padding:8px;border-radius:10px;border:1.5px solid var(--trait)"></td><td style="padding:8px;border-top:1px solid var(--trait)">60</td><td style="padding:8px;border-top:1px solid var(--trait)"><input type="checkbox" checked aria-label="Proposée"></td></tr>
+<tr><td style="padding:8px;border-top:1px solid var(--trait)">Santé mentale, adultes (cycle)</td><td style="padding:8px;border-top:1px solid var(--trait)"><input aria-label="Tarif santé mentale adultes" placeholder="À fixer" style="width:100px;padding:8px;border-radius:10px;border:1.5px solid var(--trait)"></td><td style="padding:8px;border-top:1px solid var(--trait)">60</td><td style="padding:8px;border-top:1px solid var(--trait)"><input type="checkbox" checked aria-label="Proposée"></td></tr>
+<tr><td style="padding:8px;border-top:1px solid var(--trait)">Séance individuelle</td><td style="padding:8px;border-top:1px solid var(--trait)"><input aria-label="Tarif séance individuelle" placeholder="À fixer" style="width:100px;padding:8px;border-radius:10px;border:1.5px solid var(--trait)"></td><td style="padding:8px;border-top:1px solid var(--trait)">60</td><td style="padding:8px;border-top:1px solid var(--trait)"><input type="checkbox" checked aria-label="Proposée"></td></tr>
 </tbody></table></div>
 <div class="btns"><button class="btn plein" type="button" disabled>Enregistrer les tarifs</button></div>
 </section>
 
 <section class="carte c12"><h2>Créer un groupe</h2>
 <form class="form2" onsubmit="return false">
-<label class="champ plein-l"><span>Activité</span><select><option>Soutien à la parentalité</option><option>Soutien aux aidants familiaux</option><option>Mieux traverser son deuil</option><option>Sophrologie et santé mentale, adolescents</option><option>Sophrologie et santé mentale, adultes</option></select></label>
+<label class="champ plein-l"><span>Activité</span><select><option>Soutien à la parentalité</option><option>Soutien aux aidants familiaux</option><option>Mieux traverser son deuil</option><option>Santé mentale, adolescents</option><option>Santé mentale, adultes</option></select></label>
 <label class="champ"><span>Première séance</span><input type="date" value="2027-01-14"></label>
 <label class="champ"><span>Nombre de séances</span><input type="number" value="6" min="1"></label>
 <label class="champ"><span>Horaire</span><input type="text" value="18 h 30 à 20 h"></label>
