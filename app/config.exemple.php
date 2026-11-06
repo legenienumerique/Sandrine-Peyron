@@ -16,6 +16,7 @@ return [
 
     // --- Kit LGN (back-office admin.legenienumerique.fr) ---
     'alerte_lgn' => '',                               // e-mail LGN pour les alertes techniques (rétrofacturation…), sans donnée personnelle
+    'lgn_demandes' => [],                             // ['url' => 'https://admin.legenienumerique.fr/api/site.php', 'cle' => 'demandes-…', 'secret' => 64 hex] : page Assistance
     'lgn_cles_sante' => [],                           // [identifiant => secret hexadécimal 64] : clé « sante » du back-office (2 pendant une rotation)
     // 'coupure_fichier' => '',                       // par défaut /home/legenienumerique/coupure/<domaine sans www>
     'sauvegarde' => [

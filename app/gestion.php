@@ -34,6 +34,7 @@ try {
         $route === '/articles' => gArticles(),
         (bool) preg_match('#^/articles/(nouveau|\d+)$#', $route, $m) => gArticle($m[1] === 'nouveau' ? null : (int) $m[1], $post),
         $route === '/parametres' => gParametres($post),
+        $route === '/assistance' => gAssistance($post),
         default => gPage('Page introuvable', '', fn () => print('<p>Cette page n’existe pas.</p>')),
     };
 } catch (Throwable $e) {
@@ -52,7 +53,7 @@ function qui(): string { return 'Sandrine'; }
 function gPage(string $titre, string $actif, callable $contenu, bool $menu = true): void
 {
     $liens = [['/gestion', 'Tableau de bord'], ['/gestion/agenda', 'Agenda'], ['/gestion/groupes', 'Groupes'], ['/gestion/clients', 'Clients'],
-        ['/gestion/paiements', 'Paiements'], ['/gestion/factures', 'Factures'], ['/gestion/articles', 'Activités'], ['/gestion/parametres', 'Paramètres']];
+        ['/gestion/paiements', 'Paiements'], ['/gestion/factures', 'Factures'], ['/gestion/articles', 'Activités'], ['/gestion/parametres', 'Paramètres'], ['/gestion/assistance', 'Assistance']];
     echo '<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow">',
         '<title>', h($titre), ', gestion</title><link rel="icon" href="/assets/ph/logo.webp">',
         '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>',
@@ -677,4 +678,48 @@ function gParametres(bool $post): void
 function activitesReglables(): array
 {
     return array_values(array_filter(activites(), fn ($a) => !in_array($a['code'], ['emdr', 'psychanalyse'], true)));
+}
+
+// ---------- Assistance : demandes à Le Génie Numérique (kit LGN) ----------
+function gAssistance(bool $post): void
+{
+    if ($post) {
+        $action = $_POST['action'] ?? '';
+        if ($action === 'envoyer') {
+            $r = envoyerDemande((string) ($_POST['texte'] ?? ''), (string) ($_POST['urgence'] ?? ''), lireCaptureEnvoyee($_FILES['capture'] ?? null));
+            journal(qui(), "demande {$r['numero']} envoyée à LGN");
+            flash("Demande {$r['numero']} envoyée. Vous serez tenue au courant ici.");
+        } elseif ($action === 'repondre') {
+            repondreDemande((int) ($_POST['demande'] ?? 0), (string) ($_POST['texte'] ?? ''));
+            flash('Message envoyé.');
+        }
+        aller('/gestion/assistance');
+    }
+    gPage('Assistance', '/gestion/assistance', function () {
+        if (!demandesConfigurees()) { echo '<p class="alerte">Les demandes ne sont pas encore activées sur ce site. Contactez Le Génie Numérique.</p>'; return; }
+        $statuts = ['recue' => ['att', 'Reçue'], 'en_cours' => ['att', 'En cours'], 'faite' => ['ok', 'Faite']];
+        echo '<section class="carte"><h2>Nouvelle demande</h2>',
+            '<p class="alerte" role="note"><strong>N’indiquez aucune donnée de patient ou de client.</strong> Décrivez seulement ce qu’il faut changer sur le site.</p>',
+            '<form method="post" enctype="multipart/form-data">', csrf(), '<input type="hidden" name="action" value="envoyer">',
+            '<label class="champ"><span>Votre demande</span><textarea name="texte" rows="5" maxlength="5000" required minlength="3"></textarea></label>',
+            '<label class="champ"><span>Urgence</span><select name="urgence"><option value="normale">Normale</option><option value="urgente">Urgente (site cassé, information fausse)</option></select></label>',
+            '<label class="champ"><span>Capture d’écran (facultative, PNG, JPEG ou WebP, 5 Mo au plus)</span><input type="file" name="capture" accept="image/png,image/jpeg,image/webp"></label>',
+            '<button class="btn plein">Envoyer à Le Génie Numérique</button></form></section>';
+        try { $liste = listerDemandes(); }
+        catch (Throwable $e) { journaliserErreur($e); echo '<p class="alerte">Vos demandes ne peuvent pas être affichées pour le moment.</p>'; return; }
+        echo '<section class="carte"><h2>Vos demandes</h2>';
+        if (!$liste) echo '<p>Aucune demande pour le moment.</p>';
+        foreach ($liste as $d) {
+            [$cls, $txt] = $statuts[$d['statut']] ?? ['', h((string) $d['statut'])];
+            echo '<details class="demande"', $d['statut'] !== 'faite' ? ' open' : '', '><summary><strong>', h($d['numero']), '</strong> <span class="etat-p ', $cls, '">', $txt, '</span> ',
+                $d['urgence'] === 'urgente' ? '<span class="etat-p att">Urgente</span> ' : '', '<small>', h(date('d/m/Y à H:i', strtotime((string) $d['cree_le']))), '</small></summary>',
+                '<p>', nl2br(h((string) $d['texte'])), '</p>';
+            foreach ($d['messages'] as $m) {
+                echo '<p class="message"><strong>', $m['auteur'] === 'lgn' ? 'Le Génie Numérique' : 'Vous', '</strong> <small>', h(date('d/m/Y à H:i', strtotime((string) $m['cree_le']))), '</small><br>', nl2br(h((string) $m['texte'])), '</p>';
+            }
+            echo '<form method="post">', csrf(), '<input type="hidden" name="action" value="repondre"><input type="hidden" name="demande" value="', (int) $d['id'], '">',
+                '<label class="champ"><span>Ajouter un message</span><textarea name="texte" rows="2" maxlength="5000" required></textarea></label><button class="btn">Envoyer</button></form></details>';
+        }
+        echo '</section>';
+    });
 }
