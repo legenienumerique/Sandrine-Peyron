@@ -1,8 +1,8 @@
 # Tout passe par index.php, sauf les fichiers qui existent (images, CSS, JS)
 Options -Indexes
 RewriteEngine On
-RewriteCond %{HTTPS} off
-RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+# Passage en https:// : réglé dans alwaysdata (site > « Forcer HTTPS »).
+# Pas de règle ici : derrière le proxy alwaysdata, %{HTTPS} vaut « off » et la règle bouclait.
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^ index.php [L,QSA]
 <Files "routeur-dev.php">
