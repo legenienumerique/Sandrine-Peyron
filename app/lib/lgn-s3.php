@@ -43,7 +43,7 @@ function lgnS3Requete(array $cfg, string $methode, string $cleObjet, array $requ
     $u = parse_url((string) $cfg['endpoint']);
     if (($u['scheme'] ?? '') !== 'https' || empty($u['host'])) throw new LgnS3Erreur('Adresse du stockage : https:// obligatoire');
     $hote = $u['host'] . (isset($u['port']) ? ':' . $u['port'] : '');
-    $chemin = '/' . $cfg['bucket'] . '/' . ltrim($cleObjet, '/');
+    $chemin = '/' . $cfg['bucket'] . ($cleObjet !== '' ? '/' . ltrim($cleObjet, '/') : ''); // clé vide : réglages du bucket
     $dateAmz = gmdate('Ymd\THis\Z', $maintenant ?? time());
     $empreinte = hash('sha256', $corps);
     $entetes = ['host' => $hote, 'x-amz-content-sha256' => $empreinte, 'x-amz-date' => $dateAmz] + $entetesEnPlus;
