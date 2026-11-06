@@ -11,7 +11,8 @@ RewriteRule ^ index.php [L,QSA]
 # Site d'essai (essai.…) : mot de passe, fichier hors du site créé par la publication.
 # Sans ce fichier, l'essai répond 500 ; le site public n'est pas concerné.
 # Exception : le contrôle de santé, déjà protégé par sa signature HMAC (lu par le back-office LGN).
-<If "%{HTTP_HOST} =~ /^essai\./ && %{REQUEST_URI} != '/.well-known/lgn-sante'">
+# THE_REQUEST (requête d'origine) : REQUEST_URI devient /index.php après la réécriture.
+<If "%{HTTP_HOST} =~ /^essai\./ && ! %{THE_REQUEST} =~ m#^GET /\.well-known/lgn-sante HTTP/#">
   AuthType Basic
   AuthName "Essai Sandrine Peyron"
   AuthUserFile /home/legenienumerique/sandrine-peyron-essai/essai.htpasswd
