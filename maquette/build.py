@@ -80,14 +80,13 @@ GROUPES = [
     ("parole", "Soutien aux aidants familiaux", "Groupe 1", "5 mardis, 14 h à 15 h 30", "du 10 novembre au 8 décembre", 8, 8, "complet"),
     ("parole", "Soutien aux aidants familiaux", "Groupe 2", "5 mardis, 14 h à 15 h 30", "du 12 janvier au 9 février", 8, 2, "ouvert"),
     ("parole", "Mieux traverser son deuil", "Groupe 1", "6 lundis, 18 h à 19 h 30", "du 23 novembre au 4 janvier", 6, 3, "ouvert"),
-    ("sophro", "Santé mentale, adolescents", "Groupe 1", "8 mercredis, 14 h à 15 h", "du 18 novembre au 20 janvier", 8, 4, "ouvert"),
     ("sophro", "Santé mentale, adultes", "Groupe 1", "8 vendredis, 18 h à 19 h", "du 20 novembre au 22 janvier", 10, 7, "ouvert"),
     ("sophro", "Santé mentale, adultes", "Groupe 2", "8 vendredis, 18 h à 19 h", "à partir de février", 10, 0, "ferme"),
 ]
 
 
 NOM2CODE = {"Soutien à la parentalité": "parentalite", "Soutien aux aidants familiaux": "aidants", "Mieux traverser son deuil": "deuil",
-            "Santé mentale, adolescents": "sophro-ados", "Santé mentale, adultes": "sophro-adultes"}
+            "Santé mentale, adultes": "sophro-adultes"}
 
 
 def groupe(g):
@@ -149,16 +148,26 @@ ACTS = {
         "La perte d’un proche bouleverse tout. Le groupe offre un lieu pour en parler avec d’autres qui comprennent.", "deuil", "Un chemin de forêt à l’automne, éclairé par le soleil bas",
         ["Toute personne ayant perdu un proche, que la perte soit récente ou ancienne", "Chacun parle quand il le souhaite, ou écoute seulement", "Le groupe ne remplace pas un suivi individuel si celui-ci est nécessaire"],
         ["Un accueil en douceur, à son rythme", "La parole autour de la personne disparue, des souvenirs, de ce qui change", "Un moment de relaxation guidée pour clore la séance"], None),
-    "sophro-ados": ("sophro", "Santé mentale, adolescents", 60, "Respirer, se poser, retrouver un appui quand l’anxiété prend de la place.", "Retrouver un appui, pour les adolescents",
-        "Respirer, se poser, retrouver un appui quand l’anxiété, le stress ou le mal-être prennent de la place.", "ados", "Un jeune assis seul au bout d’un ponton, face à l’eau",
-        ["Adolescents vivant anxiété, stress scolaire, troubles du sommeil ou passage difficile", "Adolescents suivis pour un trouble de santé mentale, en complément de leur suivi", "L’inscription est faite par un parent ou responsable légal"],
-        ["Des exercices de respiration et de relaxation dynamique, doux et accessibles", "Des visualisations pour retrouver confiance et calme", "Un court temps d’échange, sans obligation de parler"],
-        "Ces groupes ne sont pas un soin médical : ils complètent un suivi médical ou psychologique, ils ne le remplacent pas."),
     "sophro-adultes": ("sophro", "Santé mentale, adultes", 60, "Des outils simples pour traverser stress, anxiété ou passage difficile.", "Retrouver un appui, pour les adultes",
         "Des outils concrets pour traverser stress, anxiété, épuisement ou une période de fragilité, en petit groupe.", "adultes", "Une personne de dos face à un lac calme, à l’aube",
         ["Adultes vivant stress, anxiété, troubles du sommeil ou épuisement", "Personnes suivies pour un trouble de santé mentale, en complément de leur suivi", "Aucune expérience n’est nécessaire"],
         ["Respiration et relaxation dynamique, assis ou debout", "Visualisations pour ancrer le calme et les ressources", "Partage libre des ressentis, puis un exercice à refaire chez soi"],
         "Ces groupes ne sont pas un soin médical : ils complètent un suivi médical ou psychologique, ils ne le remplacent pas."),
+}
+
+
+# Approches des séances individuelles : textes repris de l'ancien site (page « Les séances »)
+THERAPIES = {
+    "psychanalyse": ("La psychanalyse clinique", "Une écoute fondée sur la parole, pour interroger son histoire et son rapport aux autres.", "psychanalyse", "Illustration d’une séance de psychanalyse", None,
+        ["La psychanalyse clinique propose un dispositif d’écoute et d’élaboration psychique fondé sur la parole du sujet et l’exploration de la vie inconsciente. Elle s’adresse à toute personne souhaitant interroger son rapport à elle-même, aux autres et à son histoire.",
+         "À travers le travail analytique, les manifestations de la souffrance psychique – symptômes, répétitions, conflits internes ou difficultés relationnelles – peuvent être mises en sens dans le cadre du transfert et de l’association libre.",
+         "Ce processus permet progressivement de mettre au travail les déterminants inconscients qui organisent l’expérience subjective, ouvrant la possibilité d’un déplacement dans la manière de se penser, de désirer et de vivre."]),
+    "emdr": ("Séances d’EMDR-DSA", "Traiter et intégrer les souvenirs traumatiques, pour qu’ils ne causent plus de détresse.", "regard", "Un regard en gros plan", "60 à 90 minutes",
+        ["L’objectif de l’EMDR-DSA est d’aider le patient à traiter et intégrer les souvenirs traumatiques de manière à ce qu’ils ne causent plus de détresse émotionnelle.",
+         "Les séances peuvent varier en durée, généralement entre 60 à 90 minutes, et le nombre de séances nécessaires dépend de la complexité et de la gravité du traumatisme."]),
+    "sophrologie": ("Séances de sophrologie", "Sophrologie caycédienne : gérer son stress et améliorer sa qualité de vie, durablement.", "adultes", "Une personne de dos face à un lac calme, à l’aube", "45 minutes à 1 heure",
+        ["Les séances de sophrologie caycédienne durent généralement entre 45 minutes et une heure. La fréquence et le nombre de séances nécessaires dépendent des objectifs du patient et de son évolution.",
+         "La pratique régulière de la sophrologie peut apporter des bénéfices durables en termes de gestion du stress, d’amélioration de la qualité de vie et de développement personnel."]),
 }
 
 
@@ -190,7 +199,7 @@ page("index.html", "Sandrine Peyron, accompagnement individuel et en groupe à B
 <h2>Deux façons d’être accompagné</h2>
 <ul class="offres">
 <li><a href="seances.html"><h3>Séances individuelles</h3><p>Un temps pour vous, construit à partir de votre demande. Au cabinet ou en visio.</p><span class="fl" aria-hidden="true">›</span></a></li>
-<li><a href="groupes.html"><h3>Groupes</h3><p>Parentalité, aidants familiaux, deuil, santé mentale des adolescents et des adultes. En petit effectif.</p><span class="fl" aria-hidden="true">›</span></a></li>
+<li><a href="groupes.html"><h3>Groupes</h3><p>Parentalité, aidants familiaux, deuil, santé mentale des adultes. En petit effectif.</p><span class="fl" aria-hidden="true">›</span></a></li>
 </ul>
 </div></section>
 
@@ -228,7 +237,7 @@ page("index.html", "Sandrine Peyron, accompagnement individuel et en groupe à B
 
 # ---------- Groupes ----------
 page("groupes.html", "Groupes, Sandrine Peyron",
-     "Groupes en petit effectif à Belleville-en-Beaujolais : parentalité, aidants familiaux, deuil, santé mentale des adolescents et des adultes.",
+     "Groupes en petit effectif à Belleville-en-Beaujolais : parentalité, aidants familiaux, deuil, santé mentale des adultes.",
      f"""
 <section class="ptete"><div class="wrap duo" style="grid-template-columns:1.1fr .9fr"><div>
 <h1>Avancer ensemble, en petit groupe</h1>
@@ -257,12 +266,14 @@ page("seances.html", "Séances individuelles, Sandrine Peyron",
 <div class="deux"><div class="prose">
 <h2 style="margin-top:0">Un accompagnement global</h2>
 <p>Chaque personne arrive avec son histoire et sa demande. Sandrine s’appuie sur l’ensemble de ses formations, l’écoute, le travail sur le corps et la respiration, le retraitement des souvenirs difficiles, pour construire avec vous l’accompagnement qui vous convient.</p>
+<h2>Les approches</h2>
+<ul class="liste-act">{"".join(f'<li><a href="seance-{c}.html"><b>{v[0]}</b><span>{v[1]}</span></a></li>' for c, v in THERAPIES.items())}</ul>
 <h2>Pour quoi venir ?</h2>
 <ul><li>Stress, anxiété, émotions qui débordent</li><li>Confiance et estime de soi</li><li>Sommeil, douleurs, acouphènes</li><li>Événements difficiles, traumatismes, deuils</li><li>Préparer un examen, une prise de parole, une échéance</li><li>Comprendre ce qui se répète dans sa vie</li></ul>
 <p class="small muted">Cet accompagnement ne remplace pas un traitement médical. Il peut le compléter.</p></div>
 <div><div class="fiche"><dl><dt>Durée</dt><dd>1 h environ</dd><dt>Lieu</dt><dd>Cabinet ou visio</dd><dt>Tarif</dt><dd>À fixer avec Sandrine</dd></dl></div>
 <div class="prose" style="margin-top:32px"><h2 style="margin-top:0">La première séance</h2><p>Un temps d’échange pour comprendre ce qui vous amène et définir ensemble la façon de travailler.</p></div></div></div>
-<div class="agenda" data-type="seance" data-lieu="Cabinet, Belleville-en-Beaujolais"><h3>Créneaux disponibles <span class="muted small">(exemples)</span></h3><div class="jours" aria-label="Jours"></div><p class="choix muted small" aria-live="polite" style="margin:16px 0 0"></p><div class="creneaux"></div></div>
+<div class="agenda" id="agenda" data-type="seance" data-lieu="Cabinet, Belleville-en-Beaujolais"><h3>Créneaux disponibles <span class="muted small">(exemples)</span></h3><div class="jours" aria-label="Jours"></div><p class="choix muted small" aria-live="polite" style="margin:16px 0 0"></p><div class="creneaux"></div></div>
 </div></section>
 """)
 
@@ -344,6 +355,20 @@ for code, (cat, nom, duree, resume, titre, accroche, img, alt, pour_qui, deroule
 <section class="sec" id="dates"><div class="wrap"><h2>Dates et inscriptions</h2>
 <p class="regle">Dates et places présentées à titre d’exemple.</p>
 {liste_groupes(nom=nom)}</div></section>
+""")
+
+# ---------- Pages de chaque approche ----------
+for code, (nom, resume, img, alt, duree, textes) in THERAPIES.items():
+    paras = "".join(f"<p>{x}</p>" for x in textes)
+    page(f"seance-{code}.html", f"{nom}, Sandrine Peyron", resume, f"""
+<section class="ptete"><div class="wrap duo" style="grid-template-columns:1.1fr .9fr"><div>
+<p class="fil"><a href="seances.html">Séances individuelles</a></p><h1>{nom}</h1><p class="lead">{resume}</p>
+<div class="btns"><a class="btn plein" href="seances.html#agenda">Prendre rendez-vous</a></div></div>
+<div class="galet"><img src="assets/ph/{img}.webp" alt="{alt}"></div></div></section>
+<section class="sec papier"><div class="wrap deux"><div class="prose"><h2 style="margin-top:0">En quoi cela consiste</h2>{paras}
+<p class="small muted">Cet accompagnement ne remplace pas un traitement médical. Il peut le compléter.</p></div>
+<div><div class="fiche"><dl><dt>Durée</dt><dd>{duree or "Selon la séance"}</dd><dt>Lieu</dt><dd>Cabinet ou visio</dd><dt>Tarif</dt><dd>À fixer avec Sandrine</dd></dl></div>
+<div class="prose" style="margin-top:32px"><h2 style="margin-top:0">Les autres approches</h2><ul class="liste-act">{"".join(f'<li><a href="seance-{c}.html"><b>{v[0]}</b><span>{v[1]}</span></a></li>' for c, v in THERAPIES.items() if c != code)}</ul></div></div></div></section>
 """)
 
 with open(os.path.join(OUT, "robots.txt"), "w", encoding="utf-8") as f:
