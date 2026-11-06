@@ -77,11 +77,16 @@ function sauvegarder(?string $horodatage = null): array
     return $etat;
 }
 
-// Copie externe (stockage objet distinct, verrouillé) : prérequis non encore choisi. Échec = copie locale gardée.
+// Copie externe : stockage objet Scaleway (Paris), bucket à rétention, identifiants en écriture seule. Échec = copie locale gardée.
+// config « sauvegarde.externe » : ['endpoint' => 'https://s3.fr-par.scw.cloud', 'region' => 'fr-par', 'bucket' => …, 'prefixe' => 'site/', 'cle' => …, 'secret' => …]
 function envoyerCopieExterne(string $archive): string
 {
-    if (empty(config()['sauvegarde']['externe'])) return 'non configurée';
-    $f = config()['sauvegarde']['externe'];
+    $f = config()['sauvegarde']['externe'] ?? null;
+    if (is_array($f) && !empty($f['bucket'])) {
+        require_once __DIR__ . '/lgn-s3.php';
+        $prefixe = trim((string) ($f['prefixe'] ?? ''), '/');
+        $f = function (string $fichier) use ($f, $prefixe) { lgnS3Envoyer($f, $fichier, ($prefixe !== '' ? "$prefixe/" : '') . basename($fichier)); };
+    }
     if (!is_callable($f)) return 'non configurée';
     try { $f($archive); $f($archive . '.sig'); return 'envoyée'; }
     catch (Throwable $e) { journaliserErreur('Copie externe en échec : ' . $e->getMessage()); return 'échec'; }

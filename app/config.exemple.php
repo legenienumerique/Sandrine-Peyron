@@ -23,6 +23,7 @@ return [
         'cles_signature_publiques' => [],             // clés publiques de signature acceptées (base64), anciennes comprises
         'retention_jours' => 30,
         // 'cle_signature' => '',                     // par défaut <donnees>/cles/signature.key (php outils/cles.php signature)
-        // 'externe' => null,                         // envoi vers le stockage objet externe : à brancher après le test du bucket
+        // Copie externe Scaleway (écriture seule, bucket à rétention) ; absente = copie locale seulement
+        // 'externe' => ['endpoint' => 'https://s3.fr-par.scw.cloud', 'region' => 'fr-par', 'bucket' => '', 'prefixe' => 'sandrine', 'cle' => '', 'secret' => ''],
     ],
 ];
