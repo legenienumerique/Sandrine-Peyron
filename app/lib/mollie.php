@@ -66,7 +66,7 @@ function mollieFaux(string $methode, string $chemin, ?array $corps): array
     $base = is_file($f) ? json_decode(file_get_contents($f), true) : [];
     if ($methode === 'POST' && $chemin === 'payments') {
         $id = 'tr_faux' . bin2hex(random_bytes(4));
-        $base[$id] = ['id' => $id, 'status' => 'open', 'amount' => $corps['amount'], 'description' => $corps['description'], 'redirectUrl' => $corps['redirectUrl'],
+        $base[$id] = ['id' => $id, 'status' => 'open', 'amount' => $corps['amount'], 'description' => $corps['description'], 'redirectUrl' => $corps['redirectUrl'], 'metadata' => $corps['metadata'] ?? null,
             'amountRefunded' => ['value' => '0.00'], '_links' => ['checkout' => ['href' => rtrim(config()['url'], '/') . "/dev/paiement/$id"]]];
     } elseif (preg_match('#^payments/(\w+)$#', $chemin, $m) && $methode === 'GET') {
         return $base[$m[1]] ?? throw new RuntimeException('Faux Mollie : paiement inconnu');

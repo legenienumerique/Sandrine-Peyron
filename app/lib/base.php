@@ -125,6 +125,7 @@ function journal(string $qui, string $action, string $detail = ''): void
 function journaliserErreur(Throwable|string $e): void
 {
     $msg = $e instanceof Throwable ? $e->getMessage() . ' @ ' . basename($e->getFile()) . ':' . $e->getLine() : $e;
+    $msg = filtrerDonneesPerso(preg_replace('/\s+/', ' ', $msg)); // une ligne, jamais d'e-mail, de téléphone ni de clé
     @file_put_contents(dossierDonnees('journaux') . '/erreurs.log', date('c') . " $msg\n", FILE_APPEND);
 }
 

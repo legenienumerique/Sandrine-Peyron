@@ -23,7 +23,7 @@ $GLOBALS['FAUX'] = [];
 $GLOBALS['MOLLIE_TEST'] = function (string $m, string $chemin, ?array $corps) {
     if ($m === 'POST' && $chemin === 'payments') {
         $id = 'tr_' . count($GLOBALS['FAUX']) . 'x';
-        $GLOBALS['FAUX'][$id] = ['id' => $id, 'status' => 'open', 'amount' => $corps['amount'], 'amountRefunded' => ['value' => '0.00'], '_links' => ['checkout' => ['href' => "https://mollie.test/$id"]], 'webhook' => $corps['webhookUrl'] ?? null];
+        $GLOBALS['FAUX'][$id] = ['id' => $id, 'status' => 'open', 'amount' => $corps['amount'], 'metadata' => $corps['metadata'] ?? null, 'amountRefunded' => ['value' => '0.00'], '_links' => ['checkout' => ['href' => "https://mollie.test/$id"]], 'webhook' => $corps['webhookUrl'] ?? null];
         return $GLOBALS['FAUX'][$id];
     }
     if ($m === 'GET' && preg_match('#^payments/(\w+)$#', $chemin, $x)) return $GLOBALS['FAUX'][$x[1]];

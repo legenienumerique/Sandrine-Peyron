@@ -187,8 +187,14 @@ function demarrerPaiement(int $resId): array
 function traiterPaiement(string $mollieId): ?array
 {
     $r = reservationPar('mollie', $mollieId);
-    if (!$r) return null;
+    if (!$r) return null; // identifiant inconnu localement : rien n'est traité
     $p = mollieLirePaiement($mollieId);
+    // Correspondance stricte entre le paiement Mollie et l'opération locale (identifiant, référence, montant, devise)
+    if (!paiementCorrespond($p, $mollieId, (int) $r['paiement_id'])) {
+        journal('systeme', 'anomalie_mollie', "Paiement $mollieId sans correspondance locale : non traité");
+        journaliserErreur("Mollie : paiement $mollieId sans correspondance locale (non traité)");
+        return null;
+    }
     $statut = (string) ($p['status'] ?? 'open');
     $rembourse = isset($p['amountRefunded']['value']) ? (int) round((float) $p['amountRefunded']['value'] * 100) : (int) $r['rembourse_centimes'];
     db()->prepare('UPDATE paiements SET statut = ?, rembourse_centimes = MAX(rembourse_centimes, ?), paye_le = COALESCE(paye_le, ?), maj_le = ? WHERE id = ?')
@@ -198,6 +204,17 @@ function traiterPaiement(string $mollieId): ?array
         db()->prepare("UPDATE reservations SET statut = 'annulee', motif_annulation = 'paiement non abouti', annule_le = ? WHERE id = ? AND statut = 'attente'")->execute([horodatage(), $r['id']]);
     }
     return reservation((int) $r['id']);
+}
+
+function paiementCorrespond(array $p, string $mollieId, int $paiementId): bool
+{
+    $s = db()->prepare('SELECT reference, mollie_id, montant_centimes FROM paiements WHERE id = ?');
+    $s->execute([$paiementId]);
+    $local = $s->fetch();
+    if (!$local || $local['mollie_id'] !== $mollieId || ($p['id'] ?? null) !== $mollieId) return false;
+    if (($p['metadata']['reference'] ?? null) !== $local['reference']) return false;
+    $montant = mollieMontant((int) $local['montant_centimes']);
+    return ($p['amount']['currency'] ?? null) === $montant['currency'] && ($p['amount']['value'] ?? null) === $montant['value'];
 }
 
 function confirmerReservation(int $id): void

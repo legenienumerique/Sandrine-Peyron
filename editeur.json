@@ -1,0 +1,29 @@
+{
+  "_": "Périmètre de l'éditeur IA du back-office LGN pour ce site (compétence editeur-site). Tout fichier hors de « autorises » est interdit.",
+  "technologie": "php",
+  "autorises": [
+    "app/contenus/*.json",
+    "public/assets/style.css",
+    "app/vues/gabarit.php",
+    "app/vues/pages.php"
+  ],
+  "contenus_structures": ["app/contenus/*.json"],
+  "interdits": [
+    "app/config.php",
+    "app/config.exemple.php",
+    "app/lib/**",
+    "app/gestion.php",
+    "app/schema.sql",
+    "public/index.php",
+    "public/.htaccess",
+    "outils/**",
+    "donnees/**",
+    ".github/**"
+  ],
+  "regles": [
+    "Lire les contenus dans les JSON, jamais en exécutant du PHP.",
+    "Texte brut dans les JSON : aucun HTML (il est échappé à l'affichage).",
+    "Aucune donnée de la base (clients, réservations, paiements) ne doit être lue ni transmise.",
+    "Modification sur la branche essai uniquement ; publication par Eliott depuis le back-office."
+  ]
+}

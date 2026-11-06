@@ -3,3 +3,11 @@ donnees/
 vendor/
 public/medias/
 php-local.ini
+
+# Kit LGN : jamais de sauvegarde, de clé ni de base dans le dépôt
+*.sqlite
+*.sqlite-*
+*.lgnb
+*.lgnb.sig
+*.key
+*.htpasswd

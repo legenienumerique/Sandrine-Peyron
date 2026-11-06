@@ -144,3 +144,10 @@ CREATE TABLE IF NOT EXISTS journal (
   action TEXT NOT NULL,
   detail TEXT NOT NULL DEFAULT ''
 );
+
+-- Événements Mollie déjà traités par la réconciliation (remboursements, rétrofacturations) : jamais deux fois
+CREATE TABLE IF NOT EXISTS mollie_evenements (
+  id_mollie TEXT PRIMARY KEY,
+  type TEXT NOT NULL,
+  traite_le TEXT NOT NULL
+);

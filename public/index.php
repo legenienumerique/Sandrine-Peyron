@@ -11,8 +11,35 @@ const VERSION_ACTIFS = '2';
 
 $chemin = '/' . trim(rawurldecode((string) parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH)), '/');
 $methode = $_SERVER['REQUEST_METHOD'] ?? 'GET';
+$estGestion = $chemin === '/gestion' || str_starts_with($chemin, '/gestion/');
+$estWebhook = $chemin === '/webhook/mollie';
 
-if ($chemin === '/gestion' || str_starts_with($chemin, '/gestion/')) {
+// Contrôle de santé du back-office LGN : lecture seule, signé, disponible même pendant une coupure
+if ($chemin === '/.well-known/lgn-sante') { pageSante($_SERVER); exit; }
+
+// Gestion sur gestion.sandrinepeyron.com uniquement (aucun lien depuis le site public)
+[$aiguillage, $adresse] = aiguillageGestion((string) ($_SERVER['HTTP_HOST'] ?? ''), $chemin);
+if ($aiguillage === 'redirige') { header('Location: ' . $adresse, true, 302); exit; }
+if ($aiguillage === 'introuvable') { http_response_code(404); header('X-Robots-Tag: noindex'); exit('Page introuvable.'); }
+
+// Mise hors ligne décidée depuis le back-office LGN (niveaux 1, 2, 3a, 3b ; expiration vérifiée ici)
+switch (decisionCoupure(etatCoupure(), $chemin, $estGestion, $estWebhook)) {
+    case 'page503': repondre503('Site momentanément indisponible', 'Une opération de maintenance est en cours. Le site revient très vite.'); exit;
+    case 'refus503': repondre503('Accès temporairement suspendu', 'Le site est fermé par précaution. Il sera rétabli dès la fin des vérifications.'); exit;
+    case 'webhook_file': http_response_code(mettreWebhookEnFile($_SERVER, (string) file_get_contents('php://input'), $_GET, fn ($id) => (bool) reservationPar('mollie', $id))); exit;
+}
+
+// Verrou d'écriture partagé, tenu jusqu'à la fin de la requête (libéré par PHP, même après exit).
+// Sauvegarde ou restauration en cours : webhook mis en file, autres requêtes invitées à réessayer.
+$GLOBALS['VERROU_TENU'] = prendreVerrou(false, $estWebhook ? 0.5 : 3.0);
+if ($GLOBALS['VERROU_TENU'] === false) {
+    unset($GLOBALS['VERROU_TENU']);
+    if ($estWebhook) { http_response_code(mettreWebhookEnFile($_SERVER, (string) file_get_contents('php://input'), $_GET)); exit; }
+    repondre503('Un instant', 'Une sauvegarde est en cours. Réessayez dans une minute.', 60);
+    exit;
+}
+
+if ($estGestion) {
     entetesSecurite(true);
     require RACINE . '/app/gestion.php';
     exit;

@@ -15,6 +15,9 @@ function demarrerSession(): void
     ini_set('session.gc_maxlifetime', (string) SESSION_INACTIVITE);
     session_start();
     if (isset($_SESSION['vu']) && time() - $_SESSION['vu'] > SESSION_INACTIVITE) { $_SESSION = []; session_regenerate_id(true); }
+    // Gestion fermée depuis le back-office LGN (niveau 2 ou 3) : toute session ouverte avant est invalidée
+    if (isset($_SESSION['ouverte_le']) && $_SESSION['ouverte_le'] < sessionsValidesDepuis()) { $_SESSION = []; session_regenerate_id(true); }
+    $_SESSION['ouverte_le'] ??= time();
     $_SESSION['vu'] = time();
 }
 
