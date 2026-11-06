@@ -11,7 +11,8 @@ return [
     'mollie_cle' => '',                               // test_… puis live_… (compte Mollie de Sandrine)
     'smtp_hote' => '', 'smtp_port' => 587, 'smtp_utilisateur' => '', 'smtp_mot_de_passe' => '',
     'expediteur' => '', 'expediteur_nom' => 'Sandrine Peyron',
-    'version' => '',                                  // écrit par la publication (commit) : affiché par le contrôle de santé
+    'essai' => false,                                 // true sur le site d'essai : e-mails écrits en journal, pages non indexées
+    // 'version' : écrite par la publication dans app/version.txt (commit), affichée par le contrôle de santé
 
     // --- Kit LGN (back-office admin.legenienumerique.fr) ---
     'alerte_lgn' => '',                               // e-mail LGN pour les alertes techniques (rétrofacturation…), sans donnée personnelle

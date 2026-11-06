@@ -8,8 +8,17 @@ RewriteRule ^ index.php [L,QSA]
 <Files "routeur-dev.php">
   Require all denied
 </Files>
+# Site d'essai (essai.…) : mot de passe, fichier hors du site créé par la publication.
+# Sans ce fichier, l'essai répond 500 ; le site public n'est pas concerné.
+<If "%{HTTP_HOST} =~ /^essai\./">
+  AuthType Basic
+  AuthName "Essai Sandrine Peyron"
+  AuthUserFile /home/legenienumerique/sandrine-peyron-essai/essai.htpasswd
+  Require valid-user
+</If>
 <IfModule mod_headers.c>
   <FilesMatch "\.(webp|css|js)$">
     Header set Cache-Control "public, max-age=2592000"
   </FilesMatch>
+  Header always set X-Robots-Tag "noindex, nofollow" "expr=%{HTTP_HOST} =~ /^essai\./"
 </IfModule>

@@ -21,8 +21,12 @@ function config(): array
             'smtp_hote' => '', 'smtp_port' => 587, 'smtp_utilisateur' => '', 'smtp_mot_de_passe' => '',
             'expediteur' => '', 'expediteur_nom' => 'Sandrine Peyron',
             'dompdf' => '',
+            'essai' => false, // site d'essai : e-mails en journal, non indexé
+            'version' => '',
         ], is_file($fichier) ? require $fichier : []);
         if (isset($GLOBALS['CONFIG_TEST'])) $c = array_merge($c, $GLOBALS['CONFIG_TEST']);
+        // Version écrite par la publication (commit), si config.php n'en donne pas
+        if ($c['version'] === '' && is_file(RACINE . '/app/version.txt')) $c['version'] = trim((string) file_get_contents(RACINE . '/app/version.txt'));
         if (strlen($c['secret']) < 32) throw new RuntimeException('Configuration : « secret » manquant (32 caractères minimum).');
     }
     return $c;

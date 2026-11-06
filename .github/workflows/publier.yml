@@ -1,0 +1,85 @@
+# Publie le site de Sandrine Peyron sur alwaysdata (compte « legenienumerique »).
+# Branche essai → site d'essai (essai.sandrinepeyron.com), automatiquement à chaque modification.
+# Production → seulement par lancement manuel (Actions > Publier le site > Run workflow, cible = production).
+# Chaque environnement GitHub (essai, production) a ses propres secrets :
+#   FTP_UTILISATEUR, FTP_MOT_DE_PASSE : utilisateur FTP limité au dossier du site (jamais le compte entier)
+#   CONFIG_PHP : contenu complet de app/config.php (essai : aucun secret de production)
+#   ESSAI_ACCES (essai seulement) : identifiant:motdepasse du site d'essai
+# Jamais envoyés ni supprimés : donnees/ (base, sessions, sauvegardes) et public/medias/ (photos).
+name: Publier le site
+
+on:
+  push:
+    branches: [essai]
+  workflow_dispatch:
+    inputs:
+      cible:
+        description: "essai ou production"
+        required: true
+        default: essai
+        type: choice
+        options: [essai, production]
+
+concurrency:
+  group: publication-${{ github.event.inputs.cible || 'essai' }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  publier:
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.cible || 'essai' }}
+    steps:
+      - uses: actions/checkout@v5
+
+      # Production : seulement depuis main
+      - name: Vérifier la branche
+        env:
+          CIBLE: ${{ github.event.inputs.cible || 'essai' }}
+          BRANCHE: ${{ github.ref_name }}
+        run: |
+          if [ "$CIBLE" = production ] && [ "$BRANCHE" != main ]; then echo "La production se publie seulement depuis main"; exit 1; fi
+
+      - name: Tests
+        run: |
+          php -m | grep -qi sodium || { echo "Extension sodium absente"; exit 1; }
+          php tests/tests.php
+          php tests/exploitation.php
+
+      - name: Dépendances (sans outils de développement)
+        run: composer install --no-dev --optimize-autoloader --no-interaction --no-progress
+
+      - name: Préparer la configuration
+        env:
+          CONFIG_PHP: ${{ secrets.CONFIG_PHP }}
+        run: |
+          case "$CONFIG_PHP" in "<?php"*) ;; *) echo "Secret CONFIG_PHP absent ou invalide"; exit 1 ;; esac
+          printf '%s\n' "$CONFIG_PHP" > app/config.php
+          php -l app/config.php > /dev/null
+          php -r '$c = require "app/config.php"; exit(is_array($c) && strlen($c["secret"] ?? "") >= 32 ? 0 : 1);' || { echo "config.php : tableau ou secret invalide"; exit 1; }
+          git rev-parse --short=12 HEAD > app/version.txt
+
+      - name: Préparer le mot de passe de l'essai
+        if: (github.event.inputs.cible || 'essai') == 'essai'
+        env:
+          ESSAI_ACCES: ${{ secrets.ESSAI_ACCES }}
+        run: |
+          case "$ESSAI_ACCES" in ?*:?*) ;; *) echo "Secret ESSAI_ACCES absent ou mal formé (identifiant:motdepasse)"; exit 1 ;; esac
+          sudo apt-get install -y -qq apache2-utils > /dev/null
+          printf '%s' "${ESSAI_ACCES#*:}" | htpasswd -iBc "$RUNNER_TEMP/essai.htpasswd" "${ESSAI_ACCES%%:*}"
+
+      # Envoi dossier par dossier : donnees/ n'est jamais visé, public/medias/ est exclu
+      - name: Envoi vers alwaysdata (FTPS)
+        env:
+          LFTP_PASSWORD: ${{ secrets.FTP_MOT_DE_PASSE }}
+          FTP_UTILISATEUR: ${{ secrets.FTP_UTILISATEUR }}
+        run: |
+          [ -n "$FTP_UTILISATEUR" ] || { echo "Secret FTP_UTILISATEUR absent"; exit 1; }
+          sudo apt-get install -y -qq lftp > /dev/null
+          ENVOI_MDP=""
+          if [ -f "$RUNNER_TEMP/essai.htpasswd" ]; then ENVOI_MDP="put $RUNNER_TEMP/essai.htpasswd -o essai.htpasswd;"; fi
+          R="--reverse --parallel=4 --delete --no-perms"
+          lftp --env-password -u "$FTP_UTILISATEUR" ftp-legenienumerique.alwaysdata.net -e "set ftp:ssl-force true; set ssl:verify-certificate yes; set net:max-retries 20; set net:reconnect-interval-base 5; set net:timeout 30; $ENVOI_MDP mirror $R app/ app/; mirror $R outils/ outils/; mirror $R vendor/ vendor/; mirror $R --exclude-glob medias/ --exclude-glob routeur-dev.php public/ public/; bye"
+          rm -f app/config.php

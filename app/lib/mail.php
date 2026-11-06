@@ -7,7 +7,7 @@ function expedier(string $a, string $sujet, string $texte, array $joints = []): 
 {
     if (isset($GLOBALS['EMAILS_TEST'])) { $GLOBALS['EMAILS_TEST'][] = compact('a', 'sujet', 'texte', 'joints'); return true; }
     $c = config();
-    if ($c['dev']) {
+    if ($c['dev'] || $c['essai']) { // ordinateur ou site d'essai : jamais d'envoi réel
         $pj = implode('', array_map(fn ($j) => "\n[PJ] {$j[0]} (" . strlen($j[1]) . ' octets)', $joints));
         file_put_contents(dossierDonnees('journaux') . '/emails-dev.log', date('c') . " → $a\n$sujet\n\n$texte$pj\n-----\n", FILE_APPEND);
         return true;

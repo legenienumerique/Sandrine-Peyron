@@ -24,7 +24,7 @@ function entete(string $titre, string $description, string $actif = '', string $
         $nav .= "<a href=\"$lien\"$courant>$nom</a>";
         $mnav .= "<a href=\"$lien\">$nom</a>";
     }
-    $robots = config()['dev'] ? '<meta name="robots" content="noindex,nofollow">' : '';
+    $robots = config()['dev'] || config()['essai'] ? '<meta name="robots" content="noindex,nofollow">' : '';
     echo '<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">', $robots,
         '<title>', h($titre), '</title><meta name="description" content="', h($description), '">',
         '<link rel="canonical" href="', h($url . ($canonique ?: strtok($_SERVER['REQUEST_URI'] ?? '/', '?'))), '">',

@@ -11,3 +11,4 @@ php-local.ini
 *.lgnb.sig
 *.key
 *.htpasswd
+app/version.txt
